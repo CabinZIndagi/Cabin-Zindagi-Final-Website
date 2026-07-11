@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useLanguage } from "@/lib/language-context";
 import { display } from "@/lib/fonts";
 import { ContactForm } from "./ContactForm";
@@ -49,11 +50,14 @@ export function Contact() {
           {/* World map with a "We are here" marker over India */}
           <div className="relative mt-10 max-w-lg">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src="/world.svg"
               alt="World map"
-              className="w-full select-none opacity-70 dark:opacity-90"
+              width={512}
+              height={290}
+              className="w-full h-auto select-none opacity-70 dark:opacity-90"
               draggable={false}
+              priority
             />
             <div
               className="absolute flex -translate-x-1/2 -translate-y-full flex-col items-center"

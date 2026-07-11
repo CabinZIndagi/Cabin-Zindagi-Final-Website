@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useLanguage } from "@/lib/language-context";
 import { products } from "@/data/products";
 
@@ -159,13 +160,18 @@ export function ServicesGrid() {
             {/* Image gallery */}
             <div className="grid grid-cols-2 gap-5 sm:gap-6">
               {dormitoryImages.map((img) => (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
+                <div
                   key={img.src}
-                  src={img.src}
-                  alt={p.dormitoryHeading}
-                  className={`w-full rounded-xl border border-black/5 dark:border-white/10 ${img.span} ${img.fit}`}
-                />
+                  className={`relative overflow-hidden rounded-xl border border-black/5 dark:border-white/10 ${img.span}`}
+                >
+                  <Image
+                    src={img.src}
+                    alt={p.dormitoryHeading}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className={img.fit}
+                  />
+                </div>
               ))}
             </div>
           </div>
@@ -205,34 +211,43 @@ export function ServicesGrid() {
           <div className="mt-16 lg:mt-0">
             <div className="grid grid-cols-2 gap-5 sm:gap-6">
               <figure>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/products/dormitory-beds.png"
-                  alt={p.bedsCaption}
-                  className="h-52 w-full rounded-xl border border-black/5 object-cover dark:border-white/10"
-                />
+                <div className="relative h-52 w-full overflow-hidden rounded-xl border border-black/5 dark:border-white/10">
+                  <Image
+                    src="/products/dormitory-beds.png"
+                    alt={p.bedsCaption}
+                    fill
+                    sizes="(max-width: 640px) 50vw, 33vw"
+                    className="object-cover"
+                  />
+                </div>
                 <figcaption className="mt-2 text-center text-sm opacity-60">
                   {p.bedsCaption}
                 </figcaption>
               </figure>
               <figure>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/products/dormitory-showers.png"
-                  alt={p.showerCaption}
-                  className="h-52 w-full rounded-xl border border-black/5 object-cover dark:border-white/10"
-                />
+                <div className="relative h-52 w-full overflow-hidden rounded-xl border border-black/5 dark:border-white/10">
+                  <Image
+                    src="/products/dormitory-showers.png"
+                    alt={p.showerCaption}
+                    fill
+                    sizes="(max-width: 640px) 50vw, 33vw"
+                    className="object-cover"
+                  />
+                </div>
                 <figcaption className="mt-2 text-center text-sm opacity-60">
                   {p.showerCaption}
                 </figcaption>
               </figure>
               <figure className="col-span-2">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/products/dormitory-floorplan.png"
-                  alt={p.layoutCaption}
-                  className="h-72 w-full rounded-xl border border-black/5 bg-white object-contain p-4 dark:border-white/10"
-                />
+                <div className="relative h-72 w-full overflow-hidden rounded-xl border border-black/5 bg-white p-4 dark:border-white/10">
+                  <Image
+                    src="/products/dormitory-floorplan.png"
+                    alt={p.layoutCaption}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="p-4 object-contain"
+                  />
+                </div>
                 <figcaption className="mt-2 text-center text-sm opacity-60">
                   {p.layoutCaption}
                 </figcaption>

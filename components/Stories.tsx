@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useLanguage } from "@/lib/language-context";
 import { display } from "@/lib/fonts";
 
@@ -27,11 +28,12 @@ function VideoCard({ id, title }: { id: string; title: string }) {
       className="group block overflow-hidden rounded-2xl border border-black/10 bg-white/[0.02] shadow-sm transition duration-200 hover:-translate-y-1 hover:border-brand/40 hover:shadow-xl dark:border-white/10"
     >
       <div className="relative aspect-video overflow-hidden bg-black">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={`https://img.youtube.com/vi/${id}/hqdefault.jpg`}
           alt={title}
-          className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+          fill
+          unoptimized
+          className="object-cover transition duration-300 group-hover:scale-105"
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/10" />
         <span className="absolute inset-0 flex items-center justify-center">
@@ -159,13 +161,18 @@ export function Stories({
         <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {(GALLERY.length ? GALLERY : Array.from({ length: 8 })).map((g, i) =>
             g ? (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img
+              <div
                 key={(g as { src: string }).src}
-                src={(g as { src: string; alt: string }).src}
-                alt={(g as { src: string; alt: string }).alt}
-                className="aspect-square w-full rounded-xl border border-black/5 object-cover dark:border-white/10"
-              />
+                className="relative aspect-square w-full overflow-hidden rounded-xl border border-black/5 dark:border-white/10"
+              >
+                <Image
+                  src={(g as { src: string; alt: string }).src}
+                  alt={(g as { src: string; alt: string }).alt}
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  className="object-cover"
+                />
+              </div>
             ) : (
               <div
                 key={i}

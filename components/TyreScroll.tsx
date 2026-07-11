@@ -187,10 +187,13 @@ function TyreScrollDesktop() {
     };
   }, [scrollYProgress]);
 
+  const [trigger, setTrigger] = useState(0);
+
   // Wheel completes its roll by WHEEL_END, then holds at the right edge.
   const wheelProgress = useTransform(scrollYProgress, [0, WHEEL_END], [0, 1]);
   useMotionValueEvent(wheelProgress, "change", (v) => {
     progress.current = v;
+    setTrigger((t) => t + 1);
   });
 
   // Opening block is full at the very start, then fades as the first entry rolls in.
@@ -316,7 +319,7 @@ function TyreScrollDesktop() {
             Force the r3f canvas itself to be click-through so it can't block the
             CTA buttons underneath (the wheel needs no pointer interaction). */}
         <div className="pointer-events-none absolute inset-0 z-30 [&_*]:!pointer-events-none">
-          <TyreCanvas progress={progress} />
+          <TyreCanvas progress={progress} trigger={trigger} />
         </div>
       </div>
     </section>

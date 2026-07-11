@@ -266,16 +266,10 @@ export function ScrollVideo({
     if (!section || !video) return;
 
     let duration = 0;
-    const onMeta = () => {
-      duration = video.duration || 0;
-      setReady(true);
-    };
-    if (video.readyState >= 1) onMeta();
-    else video.addEventListener("loadedmetadata", onMeta);
-
     let targetTime = 0;
     let currentTime = 0;
     let raf = 0;
+    let isRunning = false;
 
     const computeProgress = () => {
       const total = section.offsetHeight - window.innerHeight;
@@ -286,16 +280,15 @@ export function ScrollVideo({
       return total > 0 ? scrolled / total : 0;
     };
 
-    const onScroll = () => {
-      const p = computeProgress();
-      scrollYProgress.set(p);
-      if (duration > 0) targetTime = p * duration;
-    };
-
     const tick = () => {
       if (duration > 0) {
-        currentTime += (targetTime - currentTime) * 0.12;
-        if (Math.abs(targetTime - currentTime) < 0.001) currentTime = targetTime;
+        const diff = targetTime - currentTime;
+        if (Math.abs(diff) < 0.001) {
+          currentTime = targetTime;
+          isRunning = false;
+        } else {
+          currentTime += diff * 0.12;
+        }
         if (!video.seeking) {
           try {
             video.currentTime = currentTime;
@@ -303,12 +296,45 @@ export function ScrollVideo({
             /* seek can throw mid-load; ignore and retry next frame */
           }
         }
+      } else {
+        isRunning = false;
       }
-      raf = requestAnimationFrame(tick);
+      if (isRunning) {
+        raf = requestAnimationFrame(tick);
+      }
     };
 
-    onScroll();
-    raf = requestAnimationFrame(tick);
+    const onScroll = () => {
+      const p = computeProgress();
+      scrollYProgress.set(p);
+      if (duration > 0) {
+        targetTime = p * duration;
+        if (!isRunning) {
+          isRunning = true;
+          raf = requestAnimationFrame(tick);
+        }
+      }
+    };
+
+    const onMeta = () => {
+      duration = video.duration || 0;
+      setReady(true);
+      const p = computeProgress();
+      scrollYProgress.set(p);
+      targetTime = p * duration;
+      currentTime = targetTime;
+      try {
+        video.currentTime = currentTime;
+      } catch {}
+      if (!isRunning) {
+        isRunning = true;
+        raf = requestAnimationFrame(tick);
+      }
+    };
+
+    if (video.readyState >= 1) onMeta();
+    else video.addEventListener("loadedmetadata", onMeta);
+
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
 

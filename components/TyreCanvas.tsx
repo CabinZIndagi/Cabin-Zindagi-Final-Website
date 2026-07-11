@@ -1,7 +1,7 @@
 "use client";
 
-import { Suspense, useMemo, useRef, type RefObject } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Suspense, useEffect, useMemo, useRef, type RefObject } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useGLTF, Center } from "@react-three/drei";
 import * as THREE from "three";
 import type { Group } from "three";
@@ -11,9 +11,20 @@ const MODEL = "/models/wheel3.glb";
 // Largest dimension of the tyre, in world units, after normalising.
 const TYRE_SIZE = 1.77;
 
-function Tyre({ progress }: { progress: RefObject<number> }) {
+function Tyre({
+  progress,
+  trigger,
+}: {
+  progress: RefObject<number>;
+  trigger: number;
+}) {
   const ref = useRef<Group>(null);
   const { scene } = useGLTF(MODEL);
+  const { invalidate } = useThree();
+
+  useEffect(() => {
+    invalidate();
+  }, [trigger, invalidate]);
 
   // Normalise the model's size, and orient its axle towards the camera (+Z)
   // so it can roll like a wheel. The axle is the smallest bounding-box axis.
@@ -61,14 +72,17 @@ useGLTF.preload(MODEL);
 
 export default function TyreCanvas({
   progress,
+  trigger,
 }: {
   progress: RefObject<number>;
+  trigger: number;
 }) {
   return (
     <Canvas
       camera={{ position: [0, 0, 6], fov: 40 }}
       dpr={[1, 2]}
       gl={{ antialias: true, alpha: true }}
+      frameloop="demand"
     >
       {/* Self-contained lighting — no remote HDR fetch. */}
       <ambientLight intensity={0.7} />
@@ -77,7 +91,7 @@ export default function TyreCanvas({
       <directionalLight position={[-6, -2, -4]} intensity={0.8} color="#88aaff" />
 
       <Suspense fallback={null}>
-        <Tyre progress={progress} />
+        <Tyre progress={progress} trigger={trigger} />
       </Suspense>
     </Canvas>
   );

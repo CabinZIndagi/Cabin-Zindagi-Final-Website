@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useLanguage } from "@/lib/language-context";
 import type { Locale } from "@/lib/dictionaries";
 import { products } from "@/data/products";
@@ -484,12 +485,15 @@ export function ProductDetail({ id }: { id: string }) {
                 { src: "/products/dormitory-night.png", cap: "Lit sleeping bays after dark" },
               ].map((img) => (
                 <figure key={img.src}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={img.src}
-                    alt={img.cap}
-                    className="h-60 w-full rounded-xl border border-black/5 object-cover dark:border-white/10"
-                  />
+                  <div className="relative h-60 w-full overflow-hidden rounded-xl border border-black/5 dark:border-white/10">
+                    <Image
+                      src={img.src}
+                      alt={img.cap}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                      className="object-cover"
+                    />
+                  </div>
                   <figcaption className="mt-3 text-center text-sm opacity-60">
                     {img.cap}
                   </figcaption>
@@ -508,12 +512,15 @@ export function ProductDetail({ id }: { id: string }) {
                 { src: "/products/dormitory-floorplan.png", cap: p.layoutCaption, fit: "bg-white object-contain p-3" },
               ].map((img) => (
                 <figure key={img.src}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={img.src}
-                    alt={img.cap}
-                    className={`h-56 w-full rounded-xl border border-black/5 dark:border-white/10 ${img.fit}`}
-                  />
+                  <div className={`relative h-56 w-full overflow-hidden rounded-xl border border-black/5 dark:border-white/10 ${img.fit.includes("bg-white") ? "bg-white" : ""}`}>
+                    <Image
+                      src={img.src}
+                      alt={img.cap}
+                      fill
+                      sizes="(max-width: 640px) 50vw, 33vw"
+                      className={img.fit.includes("object-contain") ? "p-3 object-contain" : "object-cover"}
+                    />
+                  </div>
                   <figcaption className="mt-3 text-center text-sm opacity-60">
                     {img.cap}
                   </figcaption>

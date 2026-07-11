@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import SplashCursor from "./SplashCursor";
+import dynamic from "next/dynamic";
+
+const SplashCursor = dynamic(() => import("./SplashCursor"), { ssr: false });
 
 /*
   Only mount the WebGL fluid cursor when it makes sense:

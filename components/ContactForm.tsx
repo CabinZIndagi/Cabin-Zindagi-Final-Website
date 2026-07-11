@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import emailjs from "@emailjs/browser";
 import { useLanguage } from "@/lib/language-context";
 
 type Status = "idle" | "sending" | "success" | "error";
@@ -40,6 +39,7 @@ export function ContactForm() {
 
     setStatus("sending");
     try {
+      const emailjs = (await import("@emailjs/browser")).default;
       await emailjs.sendForm(serviceId, templateId, formRef.current, {
         publicKey,
       });
