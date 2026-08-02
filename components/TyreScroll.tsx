@@ -410,6 +410,20 @@ export function TyreScroll() {
   // wide screens after mount. (Scroll tracking uses a manual listener, so this
   // late mount no longer breaks the stage animations.)
   const [isDesktop, setIsDesktop] = useState(false);
+
+  // Land at the very top when arriving here. The root has `scroll-behavior:
+  // smooth`, which makes Next's scroll-to-top on navigation unreliable, so
+  // clicking "Impact" while scrolled down on another page could open this
+  // 400vh scroll experience part-way through (looking like it starts at the
+  // bottom). Force an instant reset to the top on mount.
+  useEffect(() => {
+    const root = document.documentElement;
+    const prev = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+    root.style.scrollBehavior = prev;
+  }, []);
+
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
     const update = () => setIsDesktop(mq.matches);
