@@ -29,6 +29,15 @@ export function Contact() {
             </a>
             <span className="opacity-40">•</span>
             <a
+              href="https://www.linkedin.com/company/cabinzindagi"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-brandtext"
+            >
+              LinkedIn
+            </a>
+            <span className="opacity-40">•</span>
+            <a
               href="https://www.instagram.com/cabinzindagi"
               target="_blank"
               rel="noopener noreferrer"

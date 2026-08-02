@@ -248,7 +248,7 @@ export function ScrollVideo({
   // false = full-bleed; true = contained card with margins + rounded corners.
   inset?: boolean;
 }) {
-  const { t, locale } = useLanguage();
+  const { t } = useLanguage();
   const home = t.home;
   const [brandFirst, ...brandRestParts] = t.brand.split(/\s+/);
   const brandRest = brandRestParts.join(" ");
@@ -421,13 +421,13 @@ export function ScrollVideo({
             {brandColor === "theme" ? (
               <span className="text-white">
                 {brandFirst}
-                {locale === "en" ? "" : " "}
+                {" "}
                 {brandRest}
               </span>
             ) : (
               <>
                 <span className="text-brand/80">{brandFirst}</span>
-                {locale === "en" ? "" : " "}
+                {" "}
                 <span className="text-accent/80">{brandRest}</span>
               </>
             )}
