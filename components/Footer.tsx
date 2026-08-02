@@ -41,6 +41,9 @@ export function Footer() {
               <Link href="/impact" className={linkClass}>
                 {t.nav.impact}
               </Link>
+              <Link href="/stories" className={linkClass}>
+                {t.nav.stories}
+              </Link>
               <Link href="/products" className={linkClass}>
                 {t.nav.products}
               </Link>
