@@ -141,7 +141,7 @@ function Stage({
 
   return (
     <div
-      className={`pointer-events-none absolute inset-y-0 z-10 flex w-[90%] ${maxW} items-center ${
+      className={`pointer-events-none absolute inset-y-0 z-10 flex w-[90%] ${maxW} items-center [@media(max-height:940px)]:pt-56 ${
         side === "left" ? "left-4 sm:left-12" : "right-4 sm:right-12"
       }`}
     >
@@ -209,8 +209,8 @@ function TyreScrollDesktop() {
   const ctaPointerEvents = useTransform(ctaOpacity, (o) => (o > 0.6 ? "auto" : "none"));
 
   return (
-    <section ref={sectionRef} className="relative h-[400vh]">
-      <div className="sticky top-0 h-screen overflow-hidden">
+    <section ref={sectionRef} className="relative h-[400dvh]">
+      <div className="sticky top-0 h-[100dvh] overflow-hidden">
         {/* Persistent heading (fades out before the CTA) */}
         <motion.div
           style={{ opacity: headingOpacity }}
@@ -225,7 +225,7 @@ function TyreScrollDesktop() {
         </motion.div>
 
         {/* Opening block — fills the centre/right while the wheel is far left */}
-        <div className="pointer-events-none absolute inset-y-0 left-4 right-4 z-10 flex items-center sm:left-[28%] sm:right-12">
+        <div className="pointer-events-none absolute inset-y-0 left-4 right-4 z-10 flex items-center [@media(max-height:940px)]:pt-56 sm:left-[28%] sm:right-12">
           <motion.div style={{ opacity: introOpacity }} className="w-full">
             <div className="rounded-2xl border border-black/10 bg-[var(--background)]/70 p-8 shadow-xl backdrop-blur-md dark:border-white/15">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brandtext">
@@ -276,7 +276,7 @@ function TyreScrollDesktop() {
         })}
 
         {/* One-off products/dorm aside, left of the wheel during "Our Work" */}
-        <div className="pointer-events-none absolute inset-y-0 left-4 z-10 flex w-[90%] max-w-sm items-center sm:left-12">
+        <div className="pointer-events-none absolute inset-y-0 left-4 z-10 flex w-[90%] max-w-sm items-center [@media(max-height:940px)]:pt-56 sm:left-12">
           <motion.div style={{ opacity: productsOpacity, y: productsY }} className="w-full">
             <div className="rounded-2xl border border-black/10 bg-[var(--background)]/70 p-7 shadow-xl backdrop-blur-md dark:border-white/15">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brandtext">
@@ -406,9 +406,10 @@ function TyreScrollMobile() {
 }
 
 export function TyreScroll() {
-  // Default to the mobile layout for SSR; switch to the 3D pinned experience on
-  // wide screens after mount. (Scroll tracking uses a manual listener, so this
-  // late mount no longer breaks the stage animations.)
+  // Default to the mobile layout for SSR; switch to the 3D pinned experience
+  // only on screens that are both wide AND tall enough after mount. (Scroll
+  // tracking uses a manual listener, so this late mount no longer breaks the
+  // stage animations.)
   const [isDesktop, setIsDesktop] = useState(false);
 
   // Land at the very top when arriving here. The root has `scroll-behavior:
@@ -425,7 +426,11 @@ export function TyreScroll() {
   }, []);
 
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
+    // The pinned 3D experience needs both horizontal AND vertical room. Below
+    // ~760px tall (short laptops, split-screen, heavy zoom, odd aspect ratios)
+    // the fixed heading and the centred panels collide, so fall back to the
+    // fully-scrollable stacked layout, which handles any size gracefully.
+    const mq = window.matchMedia("(min-width: 1024px) and (min-height: 760px)");
     const update = () => setIsDesktop(mq.matches);
     update();
     mq.addEventListener("change", update);
