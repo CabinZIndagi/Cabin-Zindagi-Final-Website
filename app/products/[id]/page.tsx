@@ -2,9 +2,11 @@ import { ProductDetail } from "@/components/ProductDetail";
 import { products } from "@/data/products";
 
 export async function generateStaticParams() {
-  return products.map((prod) => ({
-    id: prod.id,
-  }));
+  // Skip cards that link elsewhere (e.g. the booking flow) — they have no
+  // detail page of their own.
+  return products
+    .filter((prod) => !prod.href)
+    .map((prod) => ({ id: prod.id }));
 }
 
 export default async function ProductDetailPage({

@@ -207,6 +207,12 @@ export const dictionaries = {
       buyLabel: "Enquire",
       forDrivers: "For drivers",
       forCompanies: "For companies",
+      stays: {
+        tag: "For drivers",
+        title: "On the road? Book a parking or dhaba stay",
+        body: "Find safe truck parking, dhaba meals and clean washrooms along your route — bookable by the hour or overnight.",
+        cta: "Book a Stay",
+      },
       dormitoryHeading: "Driver Dormitory",
       dormitorySub: "Safe, modular rest infrastructure for drivers on the road.",
       dormitoryBody:
@@ -499,6 +505,12 @@ export const dictionaries = {
       buyLabel: "पूछताछ करें",
       forDrivers: "ड्राइवरों के लिए",
       forCompanies: "कंपनियों के लिए",
+      stays: {
+        tag: "ड्राइवरों के लिए",
+        title: "सफ़र में हैं? पार्किंग या ढाबा स्टे बुक करें",
+        body: "अपने रूट पर सुरक्षित ट्रक पार्किंग, ढाबा भोजन और साफ़ शौचालय खोजें — घंटे के हिसाब से या रातभर के लिए बुक करें।",
+        cta: "स्टे बुक करें",
+      },
       dormitoryHeading: "ड्राइवर डॉर्मिटरी",
       dormitorySub: "सड़क पर ड्राइवरों के लिए सुरक्षित, मॉड्यूलर विश्राम अवसंरचना।",
       dormitoryBody:

@@ -9,6 +9,10 @@ export type Product = {
   price: Record<Locale, string>;
   unit: Record<Locale, string>;
   features: Record<Locale, string[]>;
+  // Optional custom link + CTA. When set, the card links here (e.g. a booking
+  // flow) instead of the default /products/[id] detail page.
+  href?: string;
+  cta?: Record<Locale, string>;
 };
 
 export const products: Product[] = [
