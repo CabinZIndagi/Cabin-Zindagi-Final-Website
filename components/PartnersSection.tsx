@@ -14,8 +14,9 @@ export function PartnersSection() {
 
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden border-t border-black/10 bg-[var(--background)] px-6 py-28 dark:border-white/10">
-      {/* Soft brand glow to lift the logos off the page */}
-      <div className="pointer-events-none absolute inset-0 [background:radial-gradient(ellipse_at_center,rgba(254,104,15,0.10),transparent_65%)]" />
+      {/* Soft brand glow, confined to the top so it warms the heading without
+          tinting the logos below (which blend via multiply). */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-1/3 [background:radial-gradient(ellipse_at_top,rgba(254,104,15,0.10),transparent_70%)]" />
 
       <div className="relative mx-auto w-full max-w-4xl text-center">
         <motion.div
@@ -52,11 +53,11 @@ export function PartnersSection() {
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 + i * 0.12 }}
               className="group flex flex-col items-center"
             >
-              <div className="flex h-24 w-full items-center justify-center dark:rounded-2xl dark:bg-white dark:px-8 dark:shadow-lg dark:ring-1 dark:ring-black/5">
+              <div className="flex h-40 w-full items-center justify-center dark:rounded-2xl dark:bg-white dark:px-10 dark:py-6 dark:shadow-lg dark:ring-1 dark:ring-black/5">
                 <img
                   src={partner.logo}
                   alt={partner.alt}
-                  className="max-h-16 max-w-[85%] object-contain mix-blend-multiply transition duration-300 group-hover:scale-[1.03] dark:mix-blend-normal"
+                  className="max-h-32 max-w-[92%] object-contain mix-blend-multiply transition duration-300 group-hover:scale-[1.03] dark:mix-blend-normal"
                 />
               </div>
             </motion.div>
