@@ -1,6 +1,6 @@
 import { ScrollVideo } from "@/components/ScrollVideo";
 import { Outcome } from "@/components/Outcome";
-import { ImpactGallery } from "@/components/ImpactGallery";
+import { PartnersSection } from "@/components/PartnersSection";
 import { ImpactTransition } from "@/components/ImpactTransition";
 import { SectionSnap } from "@/components/SectionSnap";
 
@@ -13,7 +13,7 @@ export default function Home() {
         <Outcome />
       </div>
       <div className="snap-start">
-        <ImpactGallery />
+        <PartnersSection />
       </div>
       <div className="snap-start">
         <ImpactTransition />

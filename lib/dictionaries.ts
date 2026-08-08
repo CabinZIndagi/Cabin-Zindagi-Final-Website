@@ -68,6 +68,23 @@ export const dictionaries = {
         "Through authentic storytelling, community, and on-ground welfare action. Scroll to see why it matters.",
       ctaPrimary: "Partner With Us",
       ctaSecondary: "Our Impact",
+      partners: {
+        eyebrow: "In association with",
+        title: "We don't do this alone.",
+        body: "Every driver we reach, every story we tell, every safe night's rest — made possible with partners who believe the people who move India deserve better.",
+        list: [
+          {
+            logo: "/logos/cdrm.jpeg",
+            alt: "Centre for Driver Relationship Management",
+            role: "Driver relationship & welfare",
+          },
+          {
+            logo: "/logos/natraj.jpeg",
+            alt: "Natraj Roadways Private Limited",
+            role: "Transport & logistics partner",
+          },
+        ],
+      },
       pillarsHeading: "What We Do",
       pillarsSub: "Three pillars that drive everything we build.",
       pillars: [
@@ -366,6 +383,23 @@ export const dictionaries = {
         "प्रामाणिक कहानियों, समुदाय और ज़मीनी कल्याण कार्यों के माध्यम से। यह क्यों ज़रूरी है, जानने के लिए स्क्रॉल करें।",
       ctaPrimary: "हमारे साथ जुड़ें",
       ctaSecondary: "हमारा प्रभाव",
+      partners: {
+        eyebrow: "के सहयोग से",
+        title: "यह सफ़र हम अकेले नहीं करते।",
+        body: "हर ड्राइवर तक पहुँचना, हर कहानी कहना, हर रात का सुरक्षित विश्राम — यह उन साथियों के साथ ही संभव है जो मानते हैं कि भारत को चलाने वालों के लिए बेहतर हक़ है।",
+        list: [
+          {
+            logo: "/logos/cdrm.jpeg",
+            alt: "Centre for Driver Relationship Management",
+            role: "ड्राइवर संबंध और कल्याण",
+          },
+          {
+            logo: "/logos/natraj.jpeg",
+            alt: "Natraj Roadways Private Limited",
+            role: "परिवहन और लॉजिस्टिक्स साझेदार",
+          },
+        ],
+      },
       pillarsHeading: "हम क्या करते हैं",
       pillarsSub: "तीन स्तंभ जिन पर हमारा सब कुछ टिका है।",
       pillars: [
