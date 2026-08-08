@@ -2,64 +2,69 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { useLanguage } from "@/lib/language-context";
 
 /**
  * A brick/masonry-style bento gallery. Six fixed frames are laid out in an
- * offset-brick pattern (see impact section). Most frames sit empty; only a few
- * hold a photo at any moment. On a gentle interval one filled frame fades out
- * and a different empty frame fades a fresh photo in — so both the active
- * frames and the images they show keep shifting, cycling the whole pool through
- * without ever filling every frame at once.
+ * offset-brick pattern (see impact section). The two central rectangular slots
+ * are reserved for the partner logos (held static); the other four frames
+ * always hold a field photo and, on a gentle interval, a couple of them
+ * crossfade in place to fresh photos — so the wall keeps shifting through the
+ * whole pool while staying completely filled. On-screen photos never duplicate.
  */
 
-// Content pool that rotates through the frames: field photos plus the two
-// partner logos. Logos render on a white chip (contained) so they read as
-// brand marks; photos fill the frame (cover).
-type Item = { src: string; type: "photo" | "logo" };
-
-const PHOTOS: Item[] = [
-  { src: "/gallery/n1.jpg", type: "photo" },
-  { src: "/gallery/n2.jpg", type: "photo" },
-  { src: "/gallery/n3.jpg", type: "photo" },
-  { src: "/gallery/n4.jpg", type: "photo" },
-  { src: "/gallery/n5.jpg", type: "photo" },
-  { src: "/gallery/n7.jpg", type: "photo" },
-  { src: "/gallery/n8.jpg", type: "photo" },
-  { src: "/gallery/n9.jpg", type: "photo" },
-  { src: "/logos/cdrm.jpeg", type: "logo" },
-  { src: "/logos/natraj.jpeg", type: "logo" },
+// Field photos that rotate through the four photo frames.
+const PHOTOS = [
+  "/gallery/n1.jpg",
+  "/gallery/n2.jpg",
+  "/gallery/n3.jpg",
+  "/gallery/n4.jpg",
+  "/gallery/n5.jpg",
+  "/gallery/n7.jpg",
+  "/gallery/n8.jpg",
+  "/gallery/n9.jpg",
 ];
 
 // Six frames in an offset-brick layout. `area` is a CSS grid-area shorthand
 // (row-start / col-start / row-end / col-end) over a 6-col × 4-row grid; it
 // only kicks in at md+ — on small screens the frames stack into a simple grid.
+// `logo` pins a frame to a partner mark (never part of the photo rotation).
 const TILES = [
-  { area: "md:[grid-area:1/1/3/3]" }, // large top-left
-  { area: "md:[grid-area:1/3/2/5]" }, // wide top-middle
-  { area: "md:[grid-area:1/5/3/7]" }, // tall right
-  { area: "md:[grid-area:2/3/3/5]" }, // wide middle
-  { area: "md:[grid-area:3/1/5/4]" }, // wide bottom-left
-  { area: "md:[grid-area:3/4/5/7]" }, // wide bottom-right
-];
+  { area: "md:[grid-area:1/1/3/3]" }, // large top-left — photo
+  {
+    area: "md:[grid-area:1/3/2/5]", // rectangular slot — CDRM logo (captioned)
+    logo: {
+      src: "/logos/cdrm.jpeg",
+      alt: "Centre for Driver Relationship Management",
+      label: true,
+    },
+  },
+  { area: "md:[grid-area:1/5/3/7]" }, // tall right — photo
+  {
+    area: "md:[grid-area:2/3/3/5]", // rectangular slot — Natraj logo
+    logo: { src: "/logos/natraj.jpeg", alt: "Natraj Roadways Private Limited" },
+  },
+  { area: "md:[grid-area:3/1/5/4]" }, // wide bottom-left — photo
+  { area: "md:[grid-area:3/4/5/7]" }, // wide bottom-right — photo
+] as const;
 
-// How many frames hold a photo at once, how many swap each tick, and how often.
-const ACTIVE_COUNT = 3;
+// Tile indices that show rotating photos (everything without a pinned logo).
+const PHOTO_TILES = TILES.map((t, i) => ("logo" in t ? -1 : i)).filter((i) => i >= 0);
+
+// How many photo frames crossfade to a new image each tick, and how often.
 const SWAP_COUNT = 2;
-const CYCLE_MS = 2600;
+const CYCLE_MS = 3200;
+// Crossfade duration (seconds) — gentle, unhurried transitions.
+const FADE_S = 1.5;
 
 const pick = <T,>(arr: T[]) => arr[Math.floor(Math.random() * arr.length)];
 
 export function ImpactBento() {
-  // active[i] = photo index shown in frame i, or null for an empty frame.
-  const [active, setActive] = useState<(number | null)[]>(() => {
-    const slots: (number | null)[] = TILES.map(() => null);
-    // Seed a spread of filled frames with distinct photos.
-    const spread = [0, 3, 5]; // top-left, middle, bottom-right
-    spread.slice(0, ACTIVE_COUNT).forEach((tile, n) => {
-      slots[tile] = n % PHOTOS.length;
-    });
-    return slots;
-  });
+  const { t } = useLanguage();
+  // active[i] = photo index for photo frames; ignored for logo frames.
+  const [active, setActive] = useState<number[]>(() =>
+    TILES.map((_, i) => i % PHOTOS.length),
+  );
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -68,21 +73,16 @@ export function ImpactBento() {
     const id = window.setInterval(() => {
       setActive((prev) => {
         const copy = [...prev];
-        // Swap SWAP_COUNT frames this tick: each clears a filled frame and
-        // fills a different empty one with a photo not currently on screen.
-        for (let n = 0; n < SWAP_COUNT; n++) {
-          const filled = copy.map((v, i) => (v !== null ? i : -1)).filter((i) => i >= 0);
-          const empty = copy.map((v, i) => (v === null ? i : -1)).filter((i) => i >= 0);
-          if (!filled.length || !empty.length) break;
-
-          const from = pick(filled);
-          const to = pick(empty);
-          const shown = new Set(copy.filter((v): v is number => v !== null));
+        // Crossfade SWAP_COUNT distinct photo frames to photos not on screen.
+        const order = [...PHOTO_TILES].sort(() => Math.random() - 0.5);
+        for (let n = 0; n < SWAP_COUNT && n < order.length; n++) {
+          const tile = order[n];
+          const shown = new Set(PHOTO_TILES.map((t) => copy[t]));
           const poolIdx = PHOTOS.map((_, i) => i).filter((i) => !shown.has(i));
-          const photo = poolIdx.length ? pick(poolIdx) : pick(PHOTOS.map((_, i) => i));
-
-          copy[from] = null;
-          copy[to] = photo;
+          const next = poolIdx.length
+            ? pick(poolIdx)
+            : pick(PHOTOS.map((_, i) => i).filter((i) => i !== copy[tile]));
+          copy[tile] = next;
         }
         return copy;
       });
@@ -92,38 +92,42 @@ export function ImpactBento() {
   }, []);
 
   return (
-    <div className="grid aspect-[3/2] w-full grid-cols-2 gap-2.5 sm:gap-3 md:aspect-[16/9] md:grid-cols-6 md:grid-rows-4">
+    <div className="grid h-[65vh] w-full grid-cols-2 grid-rows-3 gap-2.5 sm:gap-3 md:h-[82vh] md:grid-cols-6 md:grid-rows-4">
       {TILES.map((tile, i) => (
-        // The frame itself is transparent — empty tiles vanish into the page
-        // background; only a filled tile paints a rounded card + ring.
-        <div key={i} className={`relative ${tile.area}`}>
-          <AnimatePresence>
-            {active[i] !== null && (
+        <div key={i} className={`relative overflow-hidden rounded-2xl ${tile.area}`}>
+          {"logo" in tile ? (
+            // Reserved logo slot — static, on a white chip so the mark reads.
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 overflow-hidden rounded-2xl bg-white px-5 py-4 ring-1 ring-black/5 sm:px-7 sm:py-5 dark:ring-white/10">
+              {"label" in tile.logo && tile.logo.label && (
+                <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-black/40 sm:text-xs">
+                  {t.impact.associatedWith}
+                </span>
+              )}
+              <img
+                src={tile.logo.src}
+                alt={tile.logo.alt}
+                className="max-h-full min-h-0 max-w-full flex-1 object-contain"
+              />
+            </div>
+          ) : (
+            <AnimatePresence>
               <motion.div
                 key={active[i]}
                 initial={{ opacity: 0, scale: 1.06 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.02 }}
-                transition={{ duration: 0.9, ease: "easeInOut" }}
-                className={`absolute inset-0 flex items-center justify-center overflow-hidden rounded-2xl ring-1 ring-black/5 dark:ring-white/10 ${
-                  PHOTOS[active[i] as number].type === "logo"
-                    ? "bg-white p-5 sm:p-7"
-                    : ""
-                }`}
+                transition={{ duration: FADE_S, ease: "easeInOut" }}
+                className="absolute inset-0 overflow-hidden rounded-2xl ring-1 ring-black/5 dark:ring-white/10"
               >
                 <img
-                  src={PHOTOS[active[i] as number].src}
+                  src={PHOTOS[active[i]]}
                   alt=""
                   loading="lazy"
-                  className={
-                    PHOTOS[active[i] as number].type === "logo"
-                      ? "max-h-full max-w-full object-contain"
-                      : "h-full w-full object-cover"
-                  }
+                  className="h-full w-full object-cover"
                 />
               </motion.div>
-            )}
-          </AnimatePresence>
+            </AnimatePresence>
+          )}
         </div>
       ))}
     </div>

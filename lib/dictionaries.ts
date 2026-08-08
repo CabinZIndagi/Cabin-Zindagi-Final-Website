@@ -123,6 +123,7 @@ export const dictionaries = {
     impact: {
       heading: "Our Impact",
       subheading: "Turning attention into action for India's 9 million drivers.",
+      associatedWith: "Associated with",
       cta: {
         headLead: "Stand with the people who",
         headStrong: "move India.",
@@ -414,6 +415,7 @@ export const dictionaries = {
     impact: {
       heading: "हमारा प्रभाव",
       subheading: "भारत के 90 लाख ड्राइवरों के लिए ध्यान को कार्य में बदलना।",
+      associatedWith: "सहयोगी",
       cta: {
         headLead: "उन लोगों के साथ खड़े हों जो",
         headStrong: "भारत को चलाते हैं।",
