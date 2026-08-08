@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "motion/react";
 import { useLanguage } from "@/lib/language-context";
+import { ImpactBento } from "@/components/ImpactBento";
 
 /**
  * Closing section that bridges the page into the Impact page. It scroll-reveals
@@ -15,7 +16,7 @@ export function ImpactTransition() {
   const c = t.impact.cta;
 
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden border-t border-black/10 bg-[var(--background)] px-6 py-32 dark:border-white/10">
+    <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden border-t border-black/10 bg-[var(--background)] px-6 py-32 dark:border-white/10">
       {/* Soft brand glow leading the eye toward the CTA */}
       <div className="pointer-events-none absolute inset-0 [background:radial-gradient(ellipse_at_center,rgba(254,104,15,0.10),transparent_65%)]" />
 
@@ -52,6 +53,17 @@ export function ImpactTransition() {
             arrow_forward
           </span>
         </Link>
+      </motion.div>
+
+      {/* Brick-bento photo wall — a few photos at a time, gently crossfading */}
+      <motion.div
+        initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
+        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.7, ease: "easeOut", delay: 0.1 }}
+        className="relative z-10 mx-auto mt-16 w-full max-w-5xl"
+      >
+        <ImpactBento />
       </motion.div>
     </section>
   );
