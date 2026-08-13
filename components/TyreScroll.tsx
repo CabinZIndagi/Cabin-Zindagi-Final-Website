@@ -412,8 +412,18 @@ export function TyreScroll() {
   // stage animations.)
   const [isDesktop, setIsDesktop] = useState(false);
 
-  // Landing at the top on entry is handled by <ScrollTopOnMount /> in
-  // app/impact/page.tsx — a one-shot reset here was not enough, see that file.
+  // Land at the very top when arriving here. The root has `scroll-behavior:
+  // smooth`, which makes Next's scroll-to-top on navigation unreliable, so
+  // clicking "Impact" while scrolled down on another page could open this
+  // 400vh scroll experience part-way through (looking like it starts at the
+  // bottom). Force an instant reset to the top on mount.
+  useEffect(() => {
+    const root = document.documentElement;
+    const prev = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+    root.style.scrollBehavior = prev;
+  }, []);
 
   useEffect(() => {
     // The pinned 3D experience needs both horizontal AND vertical room. Below
