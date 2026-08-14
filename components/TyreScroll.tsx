@@ -419,7 +419,18 @@ export function TyreScroll() {
   // call instead lets a stylesheet default win, which animated the correction
   // over ~900ms on reload — visibly scrolling the page up from the bottom.
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    const toTop = () =>
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    toTop();
+    // Re-assert over the next few frames: on a Back navigation the router
+    // restores the position we left this page at, and that restore lands after
+    // this effect — without these the wheel would pick up mid-roll.
+    let n = 0;
+    let raf = requestAnimationFrame(function again() {
+      toTop();
+      if (++n < 4) raf = requestAnimationFrame(again);
+    });
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   useEffect(() => {
