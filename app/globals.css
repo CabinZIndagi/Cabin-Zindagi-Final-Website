@@ -16,9 +16,11 @@
   --brand-text: #fe8a1c; /* lighter orange for text on dark bg (AA ~7:1) */
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* No `scroll-behavior: smooth` here on purpose. There are no in-page anchor
+   links to smooth out, and a root-level smooth scroll silently animates every
+   programmatic scroll — it turned the impact page's scroll-to-top into a ~900ms
+   glide up from the bottom on reload. Anything that wants smoothing should ask
+   for it at the call site with `scrollTo({ behavior: "smooth" })`. */
 
 body {
   background-color: var(--background);

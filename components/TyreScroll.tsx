@@ -412,17 +412,14 @@ export function TyreScroll() {
   // stage animations.)
   const [isDesktop, setIsDesktop] = useState(false);
 
-  // Land at the very top when arriving here. The root has `scroll-behavior:
-  // smooth`, which makes Next's scroll-to-top on navigation unreliable, so
-  // clicking "Impact" while scrolled down on another page could open this
-  // 400vh scroll experience part-way through (looking like it starts at the
-  // bottom). Force an instant reset to the top on mount.
+  // Land at the very top when arriving here — this is a 400dvh scroll
+  // experience, and opening it part-way through looks like the wheel has
+  // already rolled. `behavior: "instant"` opts this one scroll out of any
+  // smooth scrolling: toggling the root's inline `scroll-behavior` around the
+  // call instead lets a stylesheet default win, which animated the correction
+  // over ~900ms on reload — visibly scrolling the page up from the bottom.
   useEffect(() => {
-    const root = document.documentElement;
-    const prev = root.style.scrollBehavior;
-    root.style.scrollBehavior = "auto";
-    window.scrollTo(0, 0);
-    root.style.scrollBehavior = prev;
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, []);
 
   useEffect(() => {
