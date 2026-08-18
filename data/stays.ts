@@ -1,4 +1,4 @@
-// Bookable parking / dhaba rest-stops for drivers. Only one location is live
+// Parking / dhaba rest-stops for drivers, shown as listings. Only one location is live
 // today (Taloja, Navi Mumbai); add more entries here as they come online.
 
 export type StayAmenity =

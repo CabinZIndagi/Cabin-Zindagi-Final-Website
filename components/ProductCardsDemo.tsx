@@ -116,7 +116,7 @@ export function ProductCardsDemo() {
         })}
       </div>
 
-      {/* Driver-facing booking promo — a distinct band, not a product card */}
+      {/* Driver-facing locations promo — a distinct band, not a product card */}
       <div className="mt-16 overflow-hidden rounded-3xl border border-brand/30 bg-gradient-to-br from-brand/10 via-brand/[0.04] to-transparent p-8 sm:p-10">
         <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
           <div className="flex items-start gap-5">

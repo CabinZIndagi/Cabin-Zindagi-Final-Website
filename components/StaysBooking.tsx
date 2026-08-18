@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { stays, AREAS, POPULAR_TAGS, type StayAmenity } from "@/data/stays";
 
 /**
- * Driver-facing booking page for parking / dhaba rest-stops. Layout and search
+ * Driver-facing directory of parking / dhaba rest-stops. Layout and search
  * features are modelled on Brevistay (a search header + a filter sidebar + a
- * list of bookable cards), restyled into the Cabin Zindagi brand. Only one
+ * list of location cards), restyled into the Cabin Zindagi brand. Only one
  * location is live today (Taloja); all filtering runs client-side over
  * `data/stays.ts`.
  */
@@ -24,13 +24,6 @@ const AMENITY: Record<StayAmenity, { icon: string; label: string }> = {
   shower: { icon: "shower", label: "Showers" },
 };
 
-const DURATIONS = [
-  { label: "3 Hrs", hours: 3 },
-  { label: "6 Hrs", hours: 6 },
-  { label: "12 Hrs", hours: 12 },
-  { label: "Overnight", hours: 24 },
-];
-
 function Stars({ rating }: { rating: number }) {
   return (
     <span className="inline-flex items-center gap-1 rounded-md bg-neutral-900 px-2 py-0.5 text-xs font-semibold text-white">
@@ -44,18 +37,10 @@ function Stars({ rating }: { rating: number }) {
 
 export function StaysBooking() {
   const [where, setWhere] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("20:00");
   const [tags, setTags] = useState<Set<string>>(new Set());
   const [areas, setAreas] = useState<Set<string>>(new Set());
   const [minRating, setMinRating] = useState(0);
-  const [duration, setDuration] = useState<number | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
-
-  // Default the date to today (client-only to avoid hydration mismatch).
-  useEffect(() => {
-    setDate(new Date().toISOString().slice(0, 10));
-  }, []);
 
   const toggle = (set: Set<string>, value: string) => {
     const next = new Set(set);
@@ -87,7 +72,6 @@ export function StaysBooking() {
     setTags(new Set());
     setAreas(new Set());
     setMinRating(0);
-    setDuration(null);
     setWhere("");
   };
 
@@ -96,8 +80,8 @@ export function StaysBooking() {
       {/* ── Search header — scrolls away with the page (not pinned) ────── */}
       <div className="border-b border-black/5 dark:border-white/10">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-4 md:flex-row md:items-stretch md:gap-2">
-          <div className="grid flex-1 grid-cols-1 overflow-hidden rounded-2xl bg-white shadow-sm sm:grid-cols-3 dark:bg-neutral-900">
-            <label className="flex flex-col border-black/10 px-4 py-2.5 sm:border-r dark:border-white/10">
+          <div className="flex flex-1 overflow-hidden rounded-2xl bg-white shadow-sm dark:bg-neutral-900">
+            <label className="flex flex-1 flex-col px-4 py-2.5">
               <span className="text-[11px] font-semibold uppercase tracking-wide opacity-50">
                 Where?
               </span>
@@ -113,28 +97,6 @@ export function StaysBooking() {
                   <option key={a} value={a} />
                 ))}
               </datalist>
-            </label>
-            <label className="flex flex-col border-black/10 px-4 py-2.5 sm:border-r dark:border-white/10">
-              <span className="text-[11px] font-semibold uppercase tracking-wide opacity-50">
-                When?
-              </span>
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="bg-transparent text-sm font-semibold outline-none"
-              />
-            </label>
-            <label className="flex flex-col px-4 py-2.5">
-              <span className="text-[11px] font-semibold uppercase tracking-wide opacity-50">
-                What time?
-              </span>
-              <input
-                type="time"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                className="bg-transparent text-sm font-semibold outline-none"
-              />
             </label>
           </div>
           <button
@@ -153,7 +115,7 @@ export function StaysBooking() {
           <Link href="/products" className="hover:text-brandtext hover:underline">
             Products &amp; Services
           </Link>{" "}
-          &gt; <span className="font-medium opacity-100">Parking &amp; Dhaba Stays</span>
+          &gt; <span className="font-medium opacity-100">Parking &amp; Dhaba</span>
         </p>
 
         {/* Mobile filter toggle */}
@@ -211,28 +173,6 @@ export function StaysBooking() {
               </ul>
             </FilterCard>
 
-            {/* Duration / price */}
-            <FilterCard title="Duration" onClear={() => setDuration(null)}>
-              <div className="flex flex-wrap gap-2">
-                {DURATIONS.map((d) => {
-                  const on = duration === d.hours;
-                  return (
-                    <button
-                      key={d.hours}
-                      onClick={() => setDuration(on ? null : d.hours)}
-                      className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
-                        on
-                          ? "border-brand bg-brand/10 text-brandtext"
-                          : "border-black/10 hover:border-brand/50 dark:border-white/15"
-                      }`}
-                    >
-                      {d.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </FilterCard>
-
             {/* Ratings */}
             <FilterCard title="Customer Ratings" onClear={() => setMinRating(0)}>
               <div className="flex flex-wrap gap-2">
@@ -271,14 +211,14 @@ export function StaysBooking() {
             <h1 className="text-xl font-bold sm:text-2xl">
               {results.length > 0
                 ? `Showing ${results.length} parking & dhaba ${
-                    results.length === 1 ? "stay" : "stays"
+                    results.length === 1 ? "spot" : "spots"
                   }`
-                : "No stays match your filters"}
+                : "No spots match your filters"}
               {where.trim() && results.length > 0 ? ` near ${where.trim()}` : ""}
             </h1>
             <p className="mt-1 text-sm opacity-60">
-              Safe truck parking, dhaba meals and washrooms — bookable by the hour
-              or overnight.
+              Safe truck parking, dhaba meals and washrooms along your route.
+              Tap any location to see it on the map.
             </p>
 
             <div className="mt-6 space-y-6">

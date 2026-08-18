@@ -1,9 +1,9 @@
 import { StaysBooking } from "@/components/StaysBooking";
 
 export const metadata = {
-  title: "Book Parking & Dhaba Stays | Cabin Zindagi",
+  title: "Find Parking & Dhabas | Cabin Zindagi",
   description:
-    "Find and book safe truck parking, dhaba meals and rest stops for drivers — by the hour or overnight.",
+    "Find safe truck parking, dhaba meals and rest stops for drivers along your route — locations, facilities and directions.",
 };
 
 export default function StaysPage() {
