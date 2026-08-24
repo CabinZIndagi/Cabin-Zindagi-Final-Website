@@ -22,14 +22,19 @@ export function DriverWhatsappStep({ onDone }: { onDone: () => void }) {
     let cancelled = false;
     // Loaded lazily so the QR encoder never lands in the initial page bundle.
     import("qrcode")
-      .then((QRCode) =>
-        QRCode.toDataURL(WHATSAPP_GROUP_URL, {
-          margin: 1,
-          width: 480,
-          errorCorrectionLevel: "M",
+      .then((mod) => {
+        // qrcode is CommonJS; take whichever shape the bundler hands back.
+        const QRCode = (mod as unknown as { default?: typeof mod }).default ?? mod;
+        return QRCode.toDataURL(WHATSAPP_GROUP_URL, {
+          // 4 modules is the quiet zone the QR spec requires — anything less
+          // and scanners struggle to find the code against the page.
+          margin: 4,
+          width: 512,
+          // H tolerates ~30% damage: glare, a thumb on the screen, a bad angle.
+          errorCorrectionLevel: "H",
           color: { dark: "#0b3d2c", light: "#ffffff" },
-        })
-      )
+        });
+      })
       .then((url) => {
         if (!cancelled) setQr(url);
       })
@@ -64,12 +69,12 @@ export function DriverWhatsappStep({ onDone }: { onDone: () => void }) {
             <img
               src={qr}
               alt={t.drivers.scanQr}
-              width={200}
-              height={200}
-              className="h-[200px] w-[200px] rounded-lg"
+              width={208}
+              height={208}
+              className="h-[208px] w-[208px]"
             />
           ) : (
-            <div className="flex h-[200px] w-[200px] items-center justify-center rounded-lg bg-neutral-100">
+            <div className="flex h-[208px] w-[208px] items-center justify-center bg-neutral-100">
               <span className="h-7 w-7 animate-spin rounded-full border-2 border-[#25D366] border-t-transparent" />
             </div>
           )}
