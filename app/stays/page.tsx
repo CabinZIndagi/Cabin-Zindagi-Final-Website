@@ -1,3 +1,4 @@
+import { DriverGate } from "@/components/DriverGate";
 import { StaysBooking } from "@/components/StaysBooking";
 
 export const metadata = {
@@ -7,5 +8,9 @@ export const metadata = {
 };
 
 export default function StaysPage() {
-  return <StaysBooking />;
+  return (
+    <DriverGate>
+      <StaysBooking />
+    </DriverGate>
+  );
 }

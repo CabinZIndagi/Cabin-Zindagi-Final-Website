@@ -4,6 +4,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -22,6 +23,7 @@ const STORAGE_KEY = "site-locale";
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("en");
+  const firstRun = useRef(true);
 
   // Restore saved choice on mount.
   useEffect(() => {
@@ -34,6 +36,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   // Keep <html lang> in sync and persist.
   useEffect(() => {
     document.documentElement.lang = locale;
+    // Skip the very first pass: it runs with the "en" default, before the
+    // restore effect's state update has landed, and would overwrite a saved
+    // "hi" with "en" on every reload.
+    if (firstRun.current) {
+      firstRun.current = false;
+      return;
+    }
     window.localStorage.setItem(STORAGE_KEY, locale);
   }, [locale]);
 

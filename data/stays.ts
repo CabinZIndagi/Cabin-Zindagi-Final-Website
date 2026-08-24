@@ -11,12 +11,6 @@ export type StayAmenity =
   | "wifi"
   | "shower";
 
-export type StayPrice = {
-  label: string; // e.g. "6 Hrs", "Overnight"
-  hours: number; // used by the duration filter
-  price: number; // ₹ — PLACEHOLDER pricing, replace with real rates
-};
-
 export type Stay = {
   id: string;
   name: string;
@@ -31,7 +25,6 @@ export type Stay = {
   premium?: boolean;
   tags: string[];
   amenities: StayAmenity[];
-  pricing: StayPrice[];
 };
 
 export const stays: Stay[] = [
@@ -50,13 +43,6 @@ export const stays: Stay[] = [
     premium: true,
     tags: ["Truck Friendly", "Overnight Parking", "Dhaba On-site"],
     amenities: ["parking", "dhaba", "washroom", "water", "security", "tea"],
-    // PLACEHOLDER rates — replace with the real tariff for this yard.
-    pricing: [
-      { label: "3 Hrs", hours: 3, price: 120 },
-      { label: "6 Hrs", hours: 6, price: 200 },
-      { label: "12 Hrs", hours: 12, price: 350 },
-      { label: "Overnight", hours: 24, price: 500 },
-    ],
   },
 ];
 

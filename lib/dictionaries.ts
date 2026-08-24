@@ -8,6 +8,7 @@ export const dictionaries = {
       impact: "Impact",
       stories: "Stories",
       products: "Products & Services",
+      drivers: "For Drivers",
       contact: "Contact",
     },
     stories: {
@@ -224,12 +225,6 @@ export const dictionaries = {
       buyLabel: "Enquire",
       forDrivers: "For drivers",
       forCompanies: "For companies",
-      stays: {
-        tag: "For drivers",
-        title: "On the road? Find parking or a dhaba nearby",
-        body: "Browse safe truck parking, dhaba meals and clean washrooms along your route — see locations, facilities and directions.",
-        cta: "Find Parking & Dhabas",
-      },
       dormitoryHeading: "Driver Dormitory",
       dormitorySub: "Safe, modular rest infrastructure for drivers on the road.",
       dormitoryBody:
@@ -280,6 +275,48 @@ export const dictionaries = {
       bedsCaption: "First-floor sleeping bays",
       showerCaption: "Ground-floor wash & toilet block",
     },
+    drivers: {
+      heading: "For Drivers",
+      // Language step
+      langTitle: "Choose your language",
+      langSub: "अपनी भाषा चुनें",
+      // Details popup
+      formTitle: "Unlock driver services",
+      formSub: "Parking, dhabas, rest stops and more — free for drivers. Just tell us who you are.",
+      benefitsTitle: "What you get",
+      benefits: [
+        "Safe, truck-friendly parking yards with directions",
+        "Dhabas serving hot meals on-site",
+        "Clean washrooms, showers and drinking water",
+        "24×7 security at listed yards",
+      ],
+      nameLabel: "Your name",
+      namePlaceholder: "e.g. Ramesh Kumar",
+      phoneLabel: "Mobile number",
+      phonePlaceholder: "10-digit mobile number",
+      emailLabel: "Email",
+      emailPlaceholder: "you@example.com",
+      truckLabel: "Truck number",
+      truckPlaceholder: "e.g. MH 04 AB 1234",
+      optional: "(optional)",
+      submit: "Unlock services",
+      submitting: "Please wait...",
+      invalidPhone: "Please enter a valid 10-digit mobile number.",
+      error: "Something went wrong. Please try again.",
+      privacy:
+        "We use your number only to share parking and dhaba updates. We never sell your details.",
+      // Hub
+      welcomeBack: "Welcome back, {name}",
+      hubSub: "Everything Cabin Zindagi has for you on the road.",
+      whatsappTitle: "Join the driver group",
+      whatsappBody:
+        "Road updates, new parking spots and help when you need it — straight to your WhatsApp.",
+      whatsappCta: "Join on WhatsApp",
+      scanQr: "Scan the code to join on WhatsApp",
+      dismiss: "Dismiss",
+      browseTitle: "Browse all",
+      comingSoon: "Coming soon",
+    },
     contact: {
       heading: "Contact Us",
       subheading: "Send us a message and we'll reply by email.",
@@ -323,6 +360,7 @@ export const dictionaries = {
       impact: "प्रभाव",
       stories: "कहानियाँ",
       products: "उत्पाद और सेवाएँ",
+      drivers: "ड्राइवरों के लिए",
       contact: "संपर्क",
     },
     stories: {
@@ -539,12 +577,6 @@ export const dictionaries = {
       buyLabel: "पूछताछ करें",
       forDrivers: "ड्राइवरों के लिए",
       forCompanies: "कंपनियों के लिए",
-      stays: {
-        tag: "ड्राइवरों के लिए",
-        title: "सफ़र में हैं? पास में पार्किंग या ढाबा खोजें",
-        body: "अपने रूट पर सुरक्षित ट्रक पार्किंग, ढाबा भोजन और साफ़ शौचालय देखें — स्थान, सुविधाएँ और रास्ता जानें।",
-        cta: "पार्किंग और ढाबा खोजें",
-      },
       dormitoryHeading: "ड्राइवर डॉर्मिटरी",
       dormitorySub: "सड़क पर ड्राइवरों के लिए सुरक्षित, मॉड्यूलर विश्राम अवसंरचना।",
       dormitoryBody:
@@ -594,6 +626,48 @@ export const dictionaries = {
       layoutCaption: "मानक 20 फुट मॉड्यूल लेआउट",
       bedsCaption: "पहली मंज़िल स्लीपिंग बे",
       showerCaption: "भूतल वॉश और शौचालय ब्लॉक",
+    },
+    drivers: {
+      heading: "ड्राइवरों के लिए",
+      // Language step
+      langTitle: "अपनी भाषा चुनें",
+      langSub: "Choose your language",
+      // Details popup
+      formTitle: "ड्राइवर सेवाएँ खोलें",
+      formSub: "पार्किंग, ढाबे, विश्राम स्थल और बहुत कुछ — ड्राइवरों के लिए मुफ़्त। बस हमें अपना परिचय दीजिए।",
+      benefitsTitle: "आपको क्या मिलेगा",
+      benefits: [
+        "सुरक्षित, ट्रक-अनुकूल पार्किंग यार्ड और वहाँ तक का रास्ता",
+        "मौके पर गरम भोजन देने वाले ढाबे",
+        "साफ़ शौचालय, शॉवर और पीने का पानी",
+        "सूचीबद्ध यार्डों पर 24×7 सुरक्षा",
+      ],
+      nameLabel: "आपका नाम",
+      namePlaceholder: "जैसे रमेश कुमार",
+      phoneLabel: "मोबाइल नंबर",
+      phonePlaceholder: "10 अंकों का मोबाइल नंबर",
+      emailLabel: "ईमेल",
+      emailPlaceholder: "you@example.com",
+      truckLabel: "ट्रक नंबर",
+      truckPlaceholder: "जैसे MH 04 AB 1234",
+      optional: "(वैकल्पिक)",
+      submit: "सेवाएँ खोलें",
+      submitting: "कृपया प्रतीक्षा करें...",
+      invalidPhone: "कृपया 10 अंकों का सही मोबाइल नंबर डालें।",
+      error: "कुछ गलत हो गया। कृपया पुनः प्रयास करें।",
+      privacy:
+        "हम आपके नंबर का उपयोग सिर्फ़ पार्किंग और ढाबा संबंधी जानकारी भेजने के लिए करते हैं। आपकी जानकारी कभी बेची नहीं जाती।",
+      // Hub
+      welcomeBack: "वापसी पर स्वागत है, {name}",
+      hubSub: "सफ़र में केबिन ज़िंदगी की सारी सेवाएँ, एक जगह।",
+      whatsappTitle: "ड्राइवर ग्रुप से जुड़ें",
+      whatsappBody:
+        "रास्ते की जानकारी, नई पार्किंग और ज़रूरत पड़ने पर मदद — सीधे आपके व्हाट्सएप पर।",
+      whatsappCta: "व्हाट्सएप पर जुड़ें",
+      scanQr: "व्हाट्सएप पर जुड़ने के लिए कोड स्कैन करें",
+      dismiss: "बंद करें",
+      browseTitle: "सभी सेवाएँ",
+      comingSoon: "जल्द आ रहा है",
     },
     contact: {
       heading: "संपर्क करें",

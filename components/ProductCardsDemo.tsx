@@ -115,41 +115,6 @@ export function ProductCardsDemo() {
           );
         })}
       </div>
-
-      {/* Driver-facing locations promo — a distinct band, not a product card */}
-      <div className="mt-16 overflow-hidden rounded-3xl border border-brand/30 bg-gradient-to-br from-brand/10 via-brand/[0.04] to-transparent p-8 sm:p-10">
-        <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-start gap-5">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-brand/15 text-brand">
-              <span className="material-symbols-outlined text-[30px]">
-                local_parking
-              </span>
-            </div>
-            <div>
-              <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-brand/10 px-3 py-1 text-xs font-semibold text-brandtext">
-                <span className="material-symbols-outlined text-[14px]">
-                  local_shipping
-                </span>
-                {p.stays.tag}
-              </span>
-              <h3 className="mt-3 text-2xl font-bold tracking-tight">
-                {p.stays.title}
-              </h3>
-              <p className="mt-2 max-w-xl text-sm leading-relaxed opacity-70">
-                {p.stays.body}
-              </p>
-            </div>
-          </div>
-
-          <Link
-            href="/stays"
-            className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg bg-brand px-7 py-3.5 font-semibold text-[#1f2a33] transition hover:bg-brand-light"
-          >
-            {p.stays.cta}
-            <span aria-hidden>→</span>
-          </Link>
-        </div>
-      </div>
     </section>
   );
 }
