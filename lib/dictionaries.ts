@@ -306,8 +306,8 @@ export const dictionaries = {
       privacy:
         "We use your number only to share parking and dhaba updates. We never sell your details.",
       // Hub
-      welcomeBack: "Welcome back, {name}",
-      hubSub: "Everything Cabin Zindagi has for you on the road.",
+      hubTitle: "Everything for the road",
+      hubSub: "Parking, dhabas and help — wherever the trip takes you.",
       whatsappTitle: "Join the driver group",
       whatsappBody:
         "Road updates, new parking spots and help when you need it — straight to your WhatsApp.",
@@ -658,8 +658,8 @@ export const dictionaries = {
       privacy:
         "हम आपके नंबर का उपयोग सिर्फ़ पार्किंग और ढाबा संबंधी जानकारी भेजने के लिए करते हैं। आपकी जानकारी कभी बेची नहीं जाती।",
       // Hub
-      welcomeBack: "वापसी पर स्वागत है, {name}",
-      hubSub: "सफ़र में केबिन ज़िंदगी की सारी सेवाएँ, एक जगह।",
+      hubTitle: "सफ़र की हर ज़रूरत",
+      hubSub: "पार्किंग, ढाबे और मदद — आप जहाँ भी हों।",
       whatsappTitle: "ड्राइवर ग्रुप से जुड़ें",
       whatsappBody:
         "रास्ते की जानकारी, नई पार्किंग और ज़रूरत पड़ने पर मदद — सीधे आपके व्हाट्सएप पर।",

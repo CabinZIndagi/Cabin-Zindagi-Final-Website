@@ -23,6 +23,7 @@ type Step = "loading" | "language" | "details" | "whatsapp" | "hub";
 const safeNext = (value: string | null) =>
   value && value.startsWith("/") && !value.startsWith("//") ? value : null;
 
+
 export function DriverPortal() {
   const { t } = useLanguage();
   const router = useRouter();
@@ -30,14 +31,12 @@ export function DriverPortal() {
   // returned there instead of being left on the hub.
   const next = safeNext(useSearchParams().get("next"));
   const [step, setStep] = useState<Step>("loading");
-  const [name, setName] = useState<string | null>(null);
 
   // localStorage is only readable after mount, so the first paint is a
   // placeholder rather than a wrong step.
   useEffect(() => {
     const access = readDriverAccess();
     if (access) {
-      setName(access.name || null);
       // Drivers who signed up before the group card existed still get it once.
       setStep(hasSeenWhatsapp() ? "hub" : "whatsapp");
     } else {
@@ -58,7 +57,7 @@ export function DriverPortal() {
         }
         aria-hidden={step !== "hub" && step !== "loading"}
       >
-        <DriverHub name={name} />
+        <DriverHub onOpenWhatsapp={() => setStep("whatsapp")} />
       </div>
 
       <AnimatePresence>
@@ -82,13 +81,11 @@ export function DriverPortal() {
           <DriverDetailsStep
             key="details"
             onBack={() => setStep("language")}
-            onDone={(submitted) => {
-              setName(submitted);
-              setStep("whatsapp");
-            }}
+            onDone={() => setStep("whatsapp")}
           />
         )}
       </AnimatePresence>
+
     </main>
   );
 }

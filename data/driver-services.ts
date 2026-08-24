@@ -1,7 +1,8 @@
 /**
  * Tiles shown on the /for-drivers hub. Each one will eventually deep-link into
  * its own section — until that section exists, mark it `comingSoon` and the
- * tile renders as a disabled card instead of a link.
+ * tile renders as a disabled card instead of a link. An href starting with
+ * http opens in a new tab.
  *
  * Order matters: the hub colours the first four with the brand orange and the
  * rest with the accent green, so live services are listed first and
@@ -13,8 +14,22 @@ export type DriverService = {
   icon: string; // Material Symbols name
   label: { en: string; hi: string };
   href?: string;
+  /** Opens a popup instead of navigating. */
+  action?: "whatsapp";
   comingSoon?: boolean;
+  /**
+   * Artwork anchored to the tile's bottom-right corner, cropped by the tile.
+   * Put files in public/services/ and reference them as "/services/<file>".
+   * Cut-outs on a transparent background (PNG/WebP) sit best; a plain photo
+   * will show its own rectangle. Falls back to the icon when unset.
+   */
+  image?: string;
 };
+
+/** The Cabin Zindagi driver group invite. The hub card, the popup button and
+    the generated QR all read this one constant. */
+export const WHATSAPP_GROUP_URL =
+  "https://chat.whatsapp.com/IJWXTQb0O657CLtGD3oexl";
 
 export const driverServices: DriverService[] = [
   {
@@ -30,10 +45,12 @@ export const driverServices: DriverService[] = [
     href: "/stays?service=dhaba",
   },
   {
-    id: "stays",
-    icon: "hotel",
-    label: { en: "Stays & Rest", hi: "विश्राम" },
-    href: "/stays?service=stay",
+    id: "whatsapp",
+    icon: "forum",
+    label: { en: "WhatsApp Group", hi: "व्हाट्सएप ग्रुप" },
+    // Reopens the group popup (QR + join button) rather than jumping straight
+    // out — a driver on a laptop needs the QR, not a dead-end tab.
+    action: "whatsapp",
   },
   {
     id: "help",
@@ -48,26 +65,9 @@ export const driverServices: DriverService[] = [
     comingSoon: true,
   },
   {
-    id: "washrooms",
-    icon: "shower",
-    label: { en: "Washrooms", hi: "शौचालय" },
-    comingSoon: true,
-  },
-  {
     id: "fuel",
     icon: "local_gas_station",
     label: { en: "Fuel Stops", hi: "फ्यूल पंप" },
     comingSoon: true,
   },
-  {
-    id: "health",
-    icon: "medical_services",
-    label: { en: "Health Camps", hi: "स्वास्थ्य शिविर" },
-    comingSoon: true,
-  },
 ];
-
-/** The Cabin Zindagi driver group invite. The hub card, the popup button and
-    the generated QR all read this one constant. */
-export const WHATSAPP_GROUP_URL =
-  "https://chat.whatsapp.com/IJWXTQb0O657CLtGD3oexl";

@@ -12,6 +12,10 @@ import { motion } from "motion/react";
  * Steps that must be answered (language, details) pass no `onDismiss`, so the
  * only way past them is to answer.
  */
+// How many cards are currently mounted. React can overlap an unmount with the
+// next mount, so the lock is only released when the last one goes.
+let openModals = 0;
+
 export function DriverModal({
   children,
   onDismiss,
@@ -22,11 +26,19 @@ export function DriverModal({
   dismissLabel?: string;
 }) {
   // Stop the page behind from scrolling under the sheet on mobile.
+  //
+  // Counted rather than save/restore: the steps hand over to each other, so the
+  // incoming card can capture "hidden" as the value to restore and leave the
+  // page permanently unscrollable once it closes.
   useEffect(() => {
-    const previous = document.body.style.overflow;
+    openModals += 1;
     document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = previous;
+      openModals -= 1;
+      if (openModals <= 0) {
+        openModals = 0;
+        document.body.style.removeProperty("overflow");
+      }
     };
   }, []);
 
