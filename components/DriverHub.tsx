@@ -31,7 +31,7 @@ export function DriverHub({ onOpenWhatsapp }: { onOpenWhatsapp: () => void }) {
           blurred flat background would give them nothing to show through. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden"
+        className="pointer-events-none absolute inset-0 flex items-start justify-center overflow-hidden pt-40 sm:items-center sm:pt-0"
       >
         <Image
           src="/logo-mark.png"
