@@ -44,6 +44,9 @@ export function Footer() {
               <Link href="/stories" className={linkClass}>
                 {t.nav.stories}
               </Link>
+              <Link href="/for-drivers" className={linkClass}>
+                {t.nav.drivers}
+              </Link>
               <Link href="/products" className={linkClass}>
                 {t.nav.products}
               </Link>

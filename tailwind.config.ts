@@ -5,6 +5,9 @@ const config: Config = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    // data/ holds class names too (the driver service tile gradients) — without
+    // this they'd be stripped from the build and the tiles would render blank.
+    "./data/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
