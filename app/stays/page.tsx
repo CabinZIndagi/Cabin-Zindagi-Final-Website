@@ -1,11 +1,8 @@
 import { DriverGate } from "@/components/DriverGate";
 import { StaysBooking } from "@/components/StaysBooking";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata = {
-  title: "Find Parking & Dhabas | Cabin Zindagi",
-  description:
-    "Find safe truck parking, dhaba meals and rest stops for drivers along your route — locations, facilities and directions.",
-};
+export const metadata = pageMetadata("/stays");
 
 export default function StaysPage() {
   return (

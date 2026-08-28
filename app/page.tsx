@@ -3,6 +3,9 @@ import { Outcome } from "@/components/Outcome";
 import { PartnersSection } from "@/components/PartnersSection";
 import { ImpactTransition } from "@/components/ImpactTransition";
 import { SectionSnap } from "@/components/SectionSnap";
+import { pageMetadata } from "@/lib/site";
+
+export const metadata = pageMetadata("/");
 
 export default function Home() {
   return (
