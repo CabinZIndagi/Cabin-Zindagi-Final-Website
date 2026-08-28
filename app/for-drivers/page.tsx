@@ -1,11 +1,8 @@
 import { Suspense } from "react";
 import { DriverPortal } from "@/components/DriverPortal";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata = {
-  title: "For Drivers | Cabin Zindagi",
-  description:
-    "Parking, dhabas, rest stops, music and more for India's truck drivers — free, in Hindi or English.",
-};
+export const metadata = pageMetadata("/for-drivers");
 
 export default function ForDriversPage() {
   // useSearchParams inside the portal needs a Suspense boundary to prerender.

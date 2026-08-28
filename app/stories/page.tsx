@@ -1,4 +1,5 @@
 import { Stories } from "@/components/Stories";
+import { pageMetadata } from "@/lib/site";
 
 const CHANNEL_ID = "UCQXmE1mYZFDzvBn0AXMqTrA"; // @cabinzindagi
 
@@ -53,6 +54,8 @@ async function getSubscriberCount(): Promise<number | null> {
     return null;
   }
 }
+
+export const metadata = pageMetadata("/stories");
 
 export default async function StoriesPage() {
   const [latestVideos, subscribers] = await Promise.all([
