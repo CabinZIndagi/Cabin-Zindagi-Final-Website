@@ -47,6 +47,12 @@ export const metadata: Metadata = {
     },
   },
   icons: { icon: "/favicon.ico", apple: "/logo-mark.png" },
+  // Google Search Console ownership proof. Next renders this as
+  // <meta name="google-site-verification" ...> in <head>. Search Console
+  // re-checks it periodically, so it has to stay here permanently.
+  verification: {
+    google: "YM3R5b9e6lgMtfg92wpZikNeQu1Y8uMqSs3Je-okEn4",
+  },
 };
 
 export default function RootLayout({
