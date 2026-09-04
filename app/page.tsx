@@ -15,7 +15,14 @@ export default function Home() {
           design is untouched. */}
       <h1 className="sr-only">{`${siteName} — ${siteTagline}`}</h1>
       <SectionSnap />
-      <ScrollVideo src="/home/scroll.mp4" reveal="fadeup" brandColor="theme" inset />
+      <ScrollVideo
+        src="/home/scroll.mp4"
+        mobileSrc="/home/scroll.mobile.mp4"
+        poster="/home/scroll-poster.jpg"
+        reveal="fadeup"
+        brandColor="theme"
+        inset
+      />
       <div className="snap-start">
         <Outcome />
       </div>
