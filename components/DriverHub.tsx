@@ -5,11 +5,18 @@ import Link from "next/link";
 import { useLanguage } from "@/lib/language-context";
 import { driverServices, WHATSAPP_GROUP_URL } from "@/data/driver-services";
 
-// Plain glass, no brand tint: a near-clear white over a blur, held together by
-// a bright rim and a soft shadow. The watermark behind the grid is what the
-// blur picks up; without it the tiles read as flat panels.
+// The glass itself: a near-clear white over a blur, held together by a soft
+// shadow. The watermark behind the grid is what the blur picks up; without it
+// the tiles read as flat panels.
+//
+// Border colour is deliberately NOT set here. Each tile supplies its own, so a
+// live tile's brand rim and a coming-soon tile's neutral one never depend on
+// which border-color utility Tailwind happens to emit last.
 const TILE_SURFACE =
-  "bg-white/[0.18] backdrop-blur-md border-white/50 shadow-lg shadow-black/[0.06] dark:bg-white/[0.04] dark:border-white/15 dark:shadow-neutral-950/50";
+  "bg-white/[0.18] backdrop-blur-md shadow-lg shadow-black/[0.06] dark:bg-white/[0.04] dark:shadow-neutral-950/50";
+
+/** Rim for a tile with no service behind it yet. */
+const TILE_BORDER_MUTED = "border-black/10 dark:border-white/12";
 
 const TILE_BADGE = "bg-white/45 backdrop-blur-sm dark:bg-white/15";
 
@@ -20,6 +27,8 @@ const TILE_BADGE = "bg-white/45 backdrop-blur-sm dark:bg-white/15";
  */
 export function DriverHub({ onOpenWhatsapp }: { onOpenWhatsapp: () => void }) {
   const { t, locale } = useLanguage();
+  // Service labels come from the dictionary, so they translate with everything
+  // else; driverServices still supplies ids, icons and hrefs.
 
   // Label pinned top-left, artwork bleeding out of the bottom-right corner.
   const tileBase =
@@ -60,9 +69,23 @@ export function DriverHub({ onOpenWhatsapp }: { onOpenWhatsapp: () => void }) {
           large enough to read. */}
       <div className="grid grid-cols-2 gap-x-5 gap-y-5 sm:gap-x-7 sm:gap-y-7">
         {driverServices.map((service) => {
-          const label = service.label[locale];
+          const label =
+            t.catalog.driverServices.find((item) => item.id === service.id)
+              ?.label ?? service.label.en;
+          // Colour is the availability signal: tinted means it goes somewhere.
+          const tint = service.tint;
+
           const inner = (
             <>
+              {/* Colour wash rising from the bottom-right, so the tint has a
+                  source — the corner the icon occupies — instead of sitting on
+                  the tile as a flat overlay. */}
+              {tint && (
+                <span
+                  aria-hidden
+                  className={`pointer-events-none absolute inset-0 bg-gradient-to-tl to-transparent ${tint.wash}`}
+                />
+              )}
               {/* Label and badge share a flex row, so a long label can never
                   run under the badge the way an absolute one did. */}
               <div className="relative z-10 flex items-start justify-between gap-2">
@@ -90,7 +113,9 @@ export function DriverHub({ onOpenWhatsapp }: { onOpenWhatsapp: () => void }) {
               ) : (
                 <span
                   aria-hidden
-                  className="material-symbols-outlined pointer-events-none absolute -bottom-2 -right-1 text-[68px] leading-none opacity-20"
+                  className={`material-symbols-outlined pointer-events-none absolute -bottom-2 -right-1 text-[68px] leading-none ${
+                    tint ? tint.icon : "opacity-20"
+                  }`}
                 >
                   {service.icon}
                 </span>
@@ -98,7 +123,9 @@ export function DriverHub({ onOpenWhatsapp }: { onOpenWhatsapp: () => void }) {
             </>
           );
 
-          const linkCls = `${tileBase} ${TILE_SURFACE} transition active:scale-[0.97] hover:border-white/80 hover:shadow-xl dark:hover:border-white/25`;
+          const linkCls = `${tileBase} ${TILE_SURFACE} ${
+            tint ? tint.border : TILE_BORDER_MUTED
+          } transition active:scale-[0.97] hover:shadow-xl hover:brightness-110`;
 
           if (!service.comingSoon && service.action === "whatsapp") {
             // An anchor, not a button: browsers centre a button's contents via
@@ -125,7 +152,7 @@ export function DriverHub({ onOpenWhatsapp }: { onOpenWhatsapp: () => void }) {
               <div
                 key={service.id}
                 aria-disabled="true"
-                className={`${tileBase} ${TILE_SURFACE} opacity-80`}
+                className={`${tileBase} ${TILE_SURFACE} ${TILE_BORDER_MUTED} opacity-70`}
               >
                 {inner}
               </div>

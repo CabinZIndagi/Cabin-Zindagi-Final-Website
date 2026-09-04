@@ -5,11 +5,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/lib/language-context";
+import { LanguagePicker } from "./LanguagePicker";
 import { Logo } from "./Logo";
 import { motion, AnimatePresence } from "motion/react";
 
 export function Navbar() {
-  const { t, locale, toggleLocale } = useLanguage();
+  const { t } = useLanguage();
   const { resolvedTheme, setTheme } = useTheme();
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
@@ -32,16 +33,6 @@ export function Navbar() {
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
-
-  const langButton = (
-    <button
-      onClick={toggleLocale}
-      aria-label="Toggle language"
-      className="rounded-full bg-black/[0.04] hover:bg-brand/10 hover:text-brandtext dark:bg-white/[0.06] dark:hover:bg-brand/20 dark:hover:text-brand-light px-3.5 py-1.5 text-xs font-bold transition-all duration-200"
-    >
-      {locale === "en" ? "हिंदी" : "EN"}
-    </button>
-  );
 
   const themeButton = (
     <button
@@ -71,10 +62,11 @@ export function Navbar() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
+                    aria-current={active ? "page" : undefined}
                     className={`relative rounded-full px-4 py-2 transition duration-200 ${
                       active
-                        ? "bg-brand/10 text-brandtext dark:bg-brand/20 dark:text-brand"
-                        : "opacity-80 hover:opacity-100 hover:bg-black/5 dark:hover:bg-white/5"
+                        ? "text-brandtext dark:text-brand"
+                        : "opacity-70 hover:opacity-100"
                     }`}
                   >
                     {link.label}
@@ -87,7 +79,7 @@ export function Navbar() {
           <div className="flex items-center gap-1.5">
             {/* Toggles — desktop only */}
             <div className="hidden items-center gap-1.5 lg:flex">
-              {langButton}
+              <LanguagePicker />
               {themeButton}
             </div>
 
@@ -120,10 +112,11 @@ export function Navbar() {
                       <Link
                         href={link.href}
                         onClick={() => setOpen(false)}
+                        aria-current={active ? "page" : undefined}
                         className={`block rounded-2xl px-4 py-3 transition duration-200 ${
                           active
-                            ? "bg-brand/10 text-brandtext dark:bg-brand/20 dark:text-brand"
-                            : "hover:bg-black/5 dark:hover:bg-white/5"
+                            ? "text-brandtext dark:text-brand"
+                            : "opacity-70 hover:opacity-100"
                         }`}
                       >
                         {link.label}
@@ -137,7 +130,7 @@ export function Navbar() {
               <div className="mt-4 flex items-center justify-between border-t border-black/10 pt-4 dark:border-white/10">
                 <span className="text-xs font-bold uppercase tracking-wider opacity-50">Preferences</span>
                 <div className="flex items-center gap-2">
-                  {langButton}
+                  <LanguagePicker compact />
                   {themeButton}
                 </div>
               </div>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useLanguage } from "@/lib/language-context";
+import { dictionaries } from "@/lib/dictionaries";
 import { products } from "@/data/products";
 
 // Suggestion #2 — a product icon per item.
@@ -13,6 +14,14 @@ const productIcon: Record<string, string> = {
 
 export function ProductCardsDemo() {
   const { t, locale } = useLanguage();
+  // Product copy comes from the dictionary (lib/dictionaries.ts composes it
+  // from data/), so it is translated like everything else. `products` is
+  // still the source for ids, images and layout flags.
+  // Falls back to the English entry rather than asserting non-null: a missing id
+  // should render English copy, not crash the page.
+  const copy = (id: string) =>
+    t.catalog.products.find((item) => item.id === id) ??
+    dictionaries.en.catalog.products.find((item) => item.id === id)!;
   const p = t.products;
 
   return (
@@ -73,22 +82,22 @@ export function ProductCardsDemo() {
                 </span>
               </div>
 
-              <h3 className="mt-5 text-xl font-bold">{prod.name[locale]}</h3>
+              <h3 className="mt-5 text-xl font-bold">{copy(prod.id).name}</h3>
               <p className="mt-2 text-sm leading-relaxed opacity-70">
-                {prod.tagline[locale]}
+                {copy(prod.id).tagline}
               </p>
 
               <div className="mt-5">
                 <span className="text-3xl font-extrabold tracking-tight">
-                  {prod.price[locale]}
+                  {copy(prod.id).price}
                 </span>
                 <span className="ml-2 text-sm opacity-60">
-                  {prod.unit[locale]}
+                  {copy(prod.id).unit}
                 </span>
               </div>
 
               <ul className="mt-6 space-y-3">
-                {prod.features[locale].map((f) => (
+                {copy(prod.id).features.map((f) => (
                   <li key={f} className="flex items-start gap-3 text-sm">
                     <span className="material-symbols-outlined text-[18px] text-brand">
                       check_circle

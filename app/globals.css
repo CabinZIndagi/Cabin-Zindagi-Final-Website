@@ -25,7 +25,16 @@
 body {
   background-color: var(--background);
   color: var(--foreground);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  /* No colour transition here on purpose. It only ever fired on a theme change,
+     and it was the cause of the lag: body faded over 300ms while text with its
+     own Tailwind colour changed instantly, so the page recoloured in two
+     passes. The theme now switches in one frame (see app/providers.tsx). */
+  /* --font-indic is set by LanguageProvider (lib/i18n/fonts.ts) to the Noto face
+     for the current locale's script, and is unset for Latin. It goes FIRST so
+     Indic glyphs come from a font that actually has them — Geist ships Latin
+     only — while Latin text in a mixed line still falls through to Geist. */
+  font-family: var(--font-indic, var(--font-sans)), var(--font-sans),
+    ui-sans-serif, system-ui, sans-serif;
 }
 
 section {

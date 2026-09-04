@@ -1,0 +1,12 @@
+{
+  "nav": { "home": "முகப்பு" },
+  "home": {
+    "pillars": [
+      { "title": "ஆவணப்படுத்துதல்" },
+      { "title": "பரப்புதல்" }
+    ],
+    "outcome": { "beforeLabel": "முன்பு", "afterLabel": "பிறகு" },
+    "partners": { "eyebrow": "உடன் இணைந்து" }
+  },
+  "stories": { "heading": "கேபினிலிருந்து நேராக" }
+}

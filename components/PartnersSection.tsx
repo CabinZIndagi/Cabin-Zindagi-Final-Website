@@ -13,10 +13,18 @@ export function PartnersSection() {
   const p = t.home.partners;
 
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden border-t border-black/10 bg-[var(--background)] px-6 py-28 dark:border-white/10">
-      {/* Soft brand glow, confined to the top so it warms the heading without
-          tinting the logos below (which blend via multiply). */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-1/3 [background:radial-gradient(ellipse_at_top,rgba(254,104,15,0.10),transparent_70%)]" />
+    <section className="relative flex min-h-screen items-center justify-center px-6 py-28">
+      {/* Soft brand glow announcing the section.
+          It deliberately starts ABOVE this section and bleeds into the one
+          before it. Previously the ellipse was centred on the top edge and
+          clipped by overflow-hidden, so its brightest point landed exactly on a
+          hard border — a visible band across the page. Now the bloom crosses the
+          boundary and fades out in both directions, so the warmth arrives
+          gradually instead of switching on at a line.
+
+          It still peaks below the seam, keeping the heading warm without
+          tinting the logos (which blend via multiply). */}
+      <div className="pointer-events-none absolute inset-x-0 -top-56 h-[40rem] [background:radial-gradient(ellipse_75%_55%_at_50%_58%,rgba(254,104,15,0.10),transparent_70%)]" />
 
       <div className="relative mx-auto w-full max-w-4xl text-center">
         <motion.div

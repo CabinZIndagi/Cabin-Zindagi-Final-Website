@@ -1,0 +1,21 @@
+# IndicTrans2 backend — see scripts/translate_indictrans2.py
+#
+#   python3 -m venv .venv && source .venv/bin/activate
+#   pip install -r scripts/requirements-indictrans2.txt
+#
+# Only needed to REGENERATE translations. The site itself has no Python
+# dependency: the output is committed JSON that gets bundled at build time.
+
+torch>=2.2
+# Pinned hard, for two separate reasons — do not relax without testing generate():
+#  * >=5 moved PreTrainedTokenizerBase out of transformers.tokenization_utils, so
+#    "from IndicTransToolkit.processor import IndicProcessor" fails on import.
+#  * >=4.47 replaced the legacy tuple past_key_values with a Cache object.
+#    IndicTrans2's modeling_indictrans.py still does
+#    "past_key_values[0][0].shape[2] if past_key_values is not None else 0",
+#    and a Cache is not None but indexes to None, so generate() dies with
+#    "AttributeError: 'NoneType' object has no attribute 'shape'".
+# 4.46.3 is verified working against indictrans2-en-indic-dist-200M.
+transformers>=4.40,<4.47
+sentencepiece>=0.2
+IndicTransToolkit>=1.0

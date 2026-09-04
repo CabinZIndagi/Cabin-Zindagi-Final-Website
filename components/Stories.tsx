@@ -35,12 +35,7 @@ function VideoCard({ id, title }: { id: string; title: string }) {
           unoptimized
           className="object-cover transition duration-300 group-hover:scale-105"
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/10" />
-        <span className="absolute inset-0 flex items-center justify-center">
-          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-red-600 text-white shadow-lg shadow-red-900/40 transition duration-200 group-hover:scale-110">
-            <span className="material-symbols-outlined text-3xl">play_arrow</span>
-          </span>
-        </span>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-black/15" />
         <span className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-black/55 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur">
           <span className="material-symbols-outlined text-[14px] text-red-500">
             smart_display
@@ -118,7 +113,7 @@ export function Stories({
       </div>
 
       {/* Featured stories */}
-      <p className="mt-16 text-xs font-semibold uppercase tracking-[0.2em] text-brandtext">
+      <p className="mt-16 text-xs font-semibold uppercase tracking-[0.2em] text-black dark:text-white">
         {s.featured}
       </p>
       <div className="mt-5 grid gap-6 md:grid-cols-3">
@@ -128,7 +123,7 @@ export function Stories({
       </div>
 
       {/* Latest uploads */}
-      <p className="mt-14 text-xs font-semibold uppercase tracking-[0.2em] text-brandtext">
+      <p className="mt-14 text-xs font-semibold uppercase tracking-[0.2em] text-black dark:text-white">
         {s.latest}
       </p>
       <div className="mt-5 grid gap-6 md:grid-cols-3">
