@@ -1,0 +1,10 @@
+{
+  "nav": { "home": "मुख्यपृष्ठ" },
+  "home": {
+    "pillars": [
+      { "title": "दस्तऐवजीकरण" },
+      { "title": "प्रसार" }
+    ],
+    "outcome": { "afterLabel": "नंतर" }
+  }
+}

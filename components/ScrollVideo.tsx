@@ -237,11 +237,20 @@ function Beat({
  */
 export function ScrollVideo({
   src = "/test/scroll.mp4",
+  mobileSrc,
+  poster,
   reveal = "fade",
   brandColor = "logo",
   inset = false,
 }: {
   src?: string;
+  /** Smaller encode for phones. Chosen by a media query on the <source>, so it
+   *  is picked once at load — a phone never becomes a desktop mid-session, and
+   *  this avoids shipping a 1280-wide file over highway data. */
+  mobileSrc?: string;
+  /** First frame, shown while the video decodes. Without it the stage is black
+   *  behind a "Loading…" pulse for as long as that takes. */
+  poster?: string;
   reveal?: Reveal;
   // "logo" = Cabin orange / Zindagi green; "theme" = black (light) / white (dark).
   brandColor?: "logo" | "theme";
@@ -392,13 +401,20 @@ export function ScrollVideo({
         >
         <video
           ref={videoRef}
-          src={src}
           muted
           playsInline
           preload="auto"
+          poster={poster}
           // Playback is driven by scroll, so it must never autoplay.
           className="absolute inset-0 h-full w-full object-cover"
-        />
+        >
+          {/* Order matters: the browser takes the FIRST source whose media
+              query matches, so the narrow one has to come first. */}
+          {mobileSrc && (
+            <source src={mobileSrc} type="video/mp4" media="(max-width: 640px)" />
+          )}
+          <source src={src} type="video/mp4" />
+        </video>
 
         {/* Scrim for legibility — light wash in light mode (black text), dark wash
             in dark mode (white text). */}

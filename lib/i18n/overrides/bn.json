@@ -1,0 +1,10 @@
+{
+  "nav": { "home": "হোম" },
+  "home": {
+    "pillars": [
+      { "title": "নথিভুক্তকরণ" },
+      { "title": "প্রসার" }
+    ],
+    "outcome": { "beforeLabel": "আগে" }
+  }
+}

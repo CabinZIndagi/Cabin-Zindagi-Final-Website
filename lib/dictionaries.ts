@@ -1,6 +1,15 @@
+import { products } from "@/data/products";
+import { driverServices } from "@/data/driver-services";
+import {
+  INVISIBLE_CRISIS,
+  OUTCOME_EXTRA,
+  PRODUCTS_ASIDE,
+} from "@/data/panels";
+import { productDetails } from "@/data/product-details";
+
 export type Locale = "en" | "hi";
 
-export const dictionaries = {
+const base = {
   en: {
     brand: "Cabin Zindagi",
     nav: {
@@ -705,6 +714,49 @@ export const dictionaries = {
       rights: "सर्वाधिकार सुरक्षित।",
     },
   },
+};
+
+/**
+ * Product and panel copy authored as en/hi pairs in data/, folded into the
+ * dictionary for the locale being built.
+ *
+ * The point is reach: scripts/export-strings.ts translates whatever it can walk
+ * from `dictionaries.en`. Copy that stays in its own module never gets seen, so
+ * it renders English in every locale forever — which is exactly what happened
+ * to the product pages and the scroll panels before this existed. Folding it in
+ * here means one source of truth, one translation run, and no per-component
+ * plumbing.
+ */
+function catalog(locale: "en" | "hi") {
+  return {
+    products: products.map((prod) => ({
+      id: prod.id,
+      name: prod.name[locale],
+      tagline: prod.tagline[locale],
+      price: prod.price[locale],
+      unit: prod.unit[locale],
+      features: prod.features[locale],
+      cta: prod.cta?.[locale] ?? "",
+    })),
+    driverServices: driverServices.map((service) => ({
+      id: service.id,
+      label: service.label[locale],
+    })),
+    crisis: INVISIBLE_CRISIS[locale],
+    outcomeExtra: OUTCOME_EXTRA[locale],
+    productsAside: PRODUCTS_ASIDE[locale],
+    productDetails: Object.fromEntries(
+      Object.entries(productDetails).map(([id, byLocale]) => [
+        id,
+        byLocale[locale],
+      ]),
+    ),
+  };
+}
+
+export const dictionaries = {
+  en: { ...base.en, catalog: catalog("en") },
+  hi: { ...base.hi, catalog: catalog("hi") },
 };
 
 export type Dictionary = (typeof dictionaries)["en"];

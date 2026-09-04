@@ -15,7 +15,7 @@ export function ImpactTransition() {
   const c = t.impact.cta;
 
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden border-t border-black/10 bg-[var(--background)] px-6 py-32 dark:border-white/10">
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden border-t border-black/10 px-6 py-32 dark:border-white/10">
       {/* Soft brand glow leading the eye toward the CTA */}
       <div className="pointer-events-none absolute inset-0 [background:radial-gradient(ellipse_at_center,rgba(254,104,15,0.10),transparent_65%)]" />
 

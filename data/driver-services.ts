@@ -4,9 +4,10 @@
  * tile renders as a disabled card instead of a link. An href starting with
  * http opens in a new tab.
  *
- * Order matters: the hub colours the first four with the brand orange and the
- * rest with the accent green, so live services are listed first and
- * coming-soon ones last. When a service ships, move its entry up.
+ * Order matters, and so does colour: a live service carries a `tint` and a
+ * coming-soon one does not. That is the whole availability signal — a tinted
+ * tile can be tapped, a grey one cannot — so list live services first, and when
+ * one ships, move its entry up and give it a tint.
  */
 
 export type DriverService = {
@@ -24,6 +25,17 @@ export type DriverService = {
    * will show its own rectangle. Falls back to the icon when unset.
    */
   image?: string;
+  /**
+   * Brand colour for a LIVE tile. Coming-soon tiles leave this unset and stay
+   * neutral glass, which is what tells a driver at a glance which half of the
+   * grid actually goes anywhere.
+   *
+   * Full class strings, not fragments: Tailwind only emits classes it can read
+   * literally, and tailwind.config.ts scans data/ for exactly this reason.
+   * Every value is a logo colour — brand orange and accent green — so the grid
+   * reads warm-to-cool across the two rows without inventing a new palette.
+   */
+  tint?: { wash: string; border: string; icon: string };
 };
 
 /** The Cabin Zindagi driver group invite. The hub card, the popup button and
@@ -34,18 +46,33 @@ export const WHATSAPP_GROUP_URL =
 export const driverServices: DriverService[] = [
   {
     id: "parking",
+    tint: {
+      wash: "from-brand/35 dark:from-brand/25",
+      border: "border-brand/45 dark:border-brand/30",
+      icon: "text-brand/55 dark:text-brand/45",
+    },
     icon: "local_parking",
     label: { en: "Parking Lots", hi: "पार्किंग" },
     href: "/stays?service=parking",
   },
   {
     id: "dhabas",
+    tint: {
+      wash: "from-brand-light/35 dark:from-brand-light/25",
+      border: "border-brand-light/45 dark:border-brand-light/30",
+      icon: "text-brand-light/55 dark:text-brand-light/45",
+    },
     icon: "restaurant",
     label: { en: "Dhabas", hi: "ढाबे" },
     href: "/stays?service=dhaba",
   },
   {
     id: "whatsapp",
+    tint: {
+      wash: "from-accent/35 dark:from-accent/25",
+      border: "border-accent/45 dark:border-accent/30",
+      icon: "text-accent/55 dark:text-accent-light/45",
+    },
     icon: "forum",
     label: { en: "WhatsApp Group", hi: "व्हाट्सएप ग्रुप" },
     // Reopens the group popup (QR + join button) rather than jumping straight
@@ -54,6 +81,11 @@ export const driverServices: DriverService[] = [
   },
   {
     id: "help",
+    tint: {
+      wash: "from-accent-light/35 dark:from-accent-light/25",
+      border: "border-accent-light/45 dark:border-accent-light/30",
+      icon: "text-accent-light/60 dark:text-accent-light/45",
+    },
     icon: "support_agent",
     label: { en: "Help & Support", hi: "मदद" },
     href: "/contact",
