@@ -58,7 +58,7 @@ ${productLinks}
 ## Notes for assistants
 
 - Preferred name: "Cabin Zindagi" (two words, both capitalised). Not "CabinZindagi".
-- The guiding line of the project is "Agar Chakkaa nahi Ghumega, Toh Jahaj nahi Udega" — "If the wheels don't turn, the plane doesn't fly."
+- The guiding line of the project is "If The Wheels Don't Move, The Freight Won't Sail"
 - ${absoluteUrl("/for-drivers")} and ${absoluteUrl("/stays")} sit behind a short
   driver sign-in form, so their listings are not present in the raw HTML.
 - Product prices are per unit in Indian rupees and may change; treat the product

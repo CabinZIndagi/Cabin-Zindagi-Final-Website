@@ -70,8 +70,7 @@ const base = {
     },
     home: {
       tagline: "The Human Side of Logistics",
-      quote: "Agar Chakkaa nahi Ghumega, Toh Jahaj nahi Udega",
-      quoteSub: "If the wheels don't turn, the planes won't fly.",
+      quote: "If The Wheels Don't Move, The Freight Won't Sail",
       title:
         "We document, amplify and protect the lives of India's 9 million truck drivers.",
       subtitle:
@@ -89,7 +88,7 @@ const base = {
             role: "Driver relationship & welfare",
           },
           {
-            logo: "/logos/natraj.jpeg",
+            logo: "/logos/natraj-2026.jpeg",
             alt: "Natraj Roadways Private Limited",
             role: "Transport & logistics partner",
           },
@@ -422,8 +421,7 @@ const base = {
     },
     home: {
       tagline: "लॉजिस्टिक्स का मानवीय पक्ष",
-      quote: "अगर चक्का नहीं घूमेगा, तो जहाज़ नहीं उड़ेगा",
-      quoteSub: "अगर पहिए नहीं घूमेंगे, तो हवाई जहाज़ नहीं उड़ेंगे।",
+      quote: "अगर पहिए नहीं चलेंगे, तो माल नहीं चलेगा",
       title:
         "हम भारत के 90 लाख ट्रक ड्राइवरों के जीवन का दस्तावेज़ीकरण, प्रचार और संरक्षण करते हैं।",
       subtitle:
@@ -441,7 +439,7 @@ const base = {
             role: "ड्राइवर संबंध और कल्याण",
           },
           {
-            logo: "/logos/natraj.jpeg",
+            logo: "/logos/natraj-2026.jpeg",
             alt: "Natraj Roadways Private Limited",
             role: "परिवहन और लॉजिस्टिक्स साझेदार",
           },

@@ -1,10 +1,19 @@
 {
-  "nav": { "home": "হোম" },
+  "nav": {
+    "home": "হোম"
+  },
   "home": {
+    "quote": "চাকা না ঘুরলে, মাল যাবে না",
     "pillars": [
-      { "title": "নথিভুক্তকরণ" },
-      { "title": "প্রসার" }
+      {
+        "title": "নথিভুক্তকরণ"
+      },
+      {
+        "title": "প্রসার"
+      }
     ],
-    "outcome": { "beforeLabel": "আগে" }
+    "outcome": {
+      "beforeLabel": "আগে"
+    }
   }
 }

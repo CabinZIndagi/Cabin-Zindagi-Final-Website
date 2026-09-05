@@ -16,9 +16,10 @@ export default function Home() {
       <h1 className="sr-only">{`${siteName} — ${siteTagline}`}</h1>
       <SectionSnap />
       <ScrollVideo
-        src="/home/scroll.mp4"
-        mobileSrc="/home/scroll.mobile.mp4"
-        poster="/home/scroll-poster.jpg"
+        src="/home/hero.mp4"
+        mobileSrc="/home/hero.mobile.mp4"
+        poster="/home/hero-poster.jpg"
+        playback="loop"
         reveal="fadeup"
         brandColor="theme"
         inset
