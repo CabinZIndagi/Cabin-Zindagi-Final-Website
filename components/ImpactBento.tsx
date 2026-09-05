@@ -42,7 +42,7 @@ const TILES = [
   { area: "md:[grid-area:1/5/3/7]" }, // tall right — photo
   {
     area: "md:[grid-area:2/3/3/5]", // rectangular slot — Natraj logo
-    logo: { src: "/logos/natraj.jpeg", alt: "Natraj Roadways Private Limited" },
+    logo: { src: "/logos/natraj-2026.jpeg", alt: "Natraj Roadways Private Limited" },
   },
   { area: "md:[grid-area:3/1/5/4]" }, // wide bottom-left — photo
   { area: "md:[grid-area:3/4/5/7]" }, // wide bottom-right — photo

@@ -1,12 +1,26 @@
 {
-  "nav": { "home": "முகப்பு" },
-  "home": {
-    "pillars": [
-      { "title": "ஆவணப்படுத்துதல்" },
-      { "title": "பரப்புதல்" }
-    ],
-    "outcome": { "beforeLabel": "முன்பு", "afterLabel": "பிறகு" },
-    "partners": { "eyebrow": "உடன் இணைந்து" }
+  "nav": {
+    "home": "முகப்பு"
   },
-  "stories": { "heading": "கேபினிலிருந்து நேராக" }
+  "home": {
+    "quote": "சக்கரங்கள் உருளாவிட்டால், சரக்கு நகராது",
+    "pillars": [
+      {
+        "title": "ஆவணப்படுத்துதல்"
+      },
+      {
+        "title": "பரப்புதல்"
+      }
+    ],
+    "outcome": {
+      "beforeLabel": "முன்பு",
+      "afterLabel": "பிறகு"
+    },
+    "partners": {
+      "eyebrow": "உடன் இணைந்து"
+    }
+  },
+  "stories": {
+    "heading": "கேபினிலிருந்து நேராக"
+  }
 }

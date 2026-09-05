@@ -228,10 +228,12 @@ function Beat({
 }
 
 /**
- * Scroll-scrubbed hero video with timed content beats. The clip is pinned and its
- * playback is driven by scroll (currentTime <- scroll progress, eased in a rAF
- * loop). The same progress value reveals the home-page copy in sequence — brand ->
- * tagline -> "What We Do" + the three pillars -> the closing quote.
+ * Pinned hero video with timed content beats. Scroll progress always drives the
+ * copy — brand -> tagline -> "What We Do" + the three pillars -> the closing
+ * quote — and `playback` decides what the clip itself does underneath it:
+ *
+ *   "scrub" — currentTime follows scroll progress, eased in a rAF loop
+ *   "loop"  — the clip autoplays and loops at its own pace, ignoring scroll
  *
  * `reveal="blur"` gives the beats the word-by-word blur entrance (like Pillars).
  */
@@ -242,6 +244,7 @@ export function ScrollVideo({
   reveal = "fade",
   brandColor = "logo",
   inset = false,
+  playback = "scrub",
 }: {
   src?: string;
   /** Smaller encode for phones. Chosen by a media query on the <source>, so it
@@ -256,6 +259,8 @@ export function ScrollVideo({
   brandColor?: "logo" | "theme";
   // false = full-bleed; true = contained card with margins + rounded corners.
   inset?: boolean;
+  /** "scrub" = seek the clip from scroll; "loop" = let it play on its own. */
+  playback?: "scrub" | "loop";
 }) {
   const { t } = useLanguage();
   const home = t.home;
@@ -267,6 +272,9 @@ export function ScrollVideo({
   const sectionRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [ready, setReady] = useState(false);
+  // Flips once the clip has a decoded frame on screen, which is when the
+  // still placeholder underneath it can safely fade away.
+  const [firstFrame, setFirstFrame] = useState(false);
   const scrollYProgress = useMotionValue(0);
 
   useEffect(() => {
@@ -274,6 +282,7 @@ export function ScrollVideo({
     const video = videoRef.current;
     if (!section || !video) return;
 
+    const scrub = playback === "scrub";
     let duration = 0;
     let targetTime = 0;
     let currentTime = 0;
@@ -316,7 +325,7 @@ export function ScrollVideo({
     const onScroll = () => {
       const p = computeProgress();
       scrollYProgress.set(p);
-      if (duration > 0) {
+      if (scrub && duration > 0) {
         targetTime = p * duration;
         if (!isRunning) {
           isRunning = true;
@@ -330,6 +339,14 @@ export function ScrollVideo({
       setReady(true);
       const p = computeProgress();
       scrollYProgress.set(p);
+      // In "loop" mode the element's own autoplay/loop attributes run the clip;
+      // nothing here touches currentTime. play() is called anyway because iOS
+      // ignores the autoplay attribute on a video that was never in the DOM
+      // when the attribute was parsed, and it rejects harmlessly otherwise.
+      if (!scrub) {
+        void video.play().catch(() => {});
+        return;
+      }
       targetTime = p * duration;
       currentTime = targetTime;
       try {
@@ -341,8 +358,14 @@ export function ScrollVideo({
       }
     };
 
+    // readyState >= 2 means the first frame is decoded and painted, so the
+    // poster still can hand over without a flash of black between them.
+    const onData = () => setFirstFrame(true);
+
     if (video.readyState >= 1) onMeta();
     else video.addEventListener("loadedmetadata", onMeta);
+    if (video.readyState >= 2) onData();
+    else video.addEventListener("loadeddata", onData);
 
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
@@ -352,8 +375,9 @@ export function ScrollVideo({
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       video.removeEventListener("loadedmetadata", onMeta);
+      video.removeEventListener("loadeddata", onData);
     };
-  }, [scrollYProgress]);
+  }, [scrollYProgress, playback]);
 
   const pillarRanges: Range[] = [
     [0.35, 0.39, 0.46, 0.51],
@@ -399,13 +423,32 @@ export function ScrollVideo({
               : "relative h-full w-full"
           }
         >
+        {/* First-frame still, server-rendered so it is already downloading while
+            the clip's first bytes are still in flight. The <video poster> below
+            covers the same job natively, but only after the element itself is
+            laid out — on a slow connection that gap is a black stage. */}
+        {poster && (
+          <img
+            src={poster}
+            alt=""
+            aria-hidden
+            fetchPriority="high"
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+              firstFrame ? "opacity-0" : "opacity-100"
+            }`}
+          />
+        )}
+
         <video
           ref={videoRef}
           muted
           playsInline
           preload="auto"
           poster={poster}
-          // Playback is driven by scroll, so it must never autoplay.
+          // In "scrub" mode playback is driven by scroll, so it must never
+          // autoplay; in "loop" mode the clip runs itself, independent of scroll.
+          autoPlay={playback === "loop"}
+          loop={playback === "loop"}
           className="absolute inset-0 h-full w-full object-cover"
         >
           {/* Order matters: the browser takes the FIRST source whose media
@@ -420,8 +463,9 @@ export function ScrollVideo({
             in dark mode (white text). */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/30 to-black/60" />
 
-        {/* Loading hint until metadata is ready */}
-        {!ready && (
+        {/* Loading hint until metadata is ready — only when there is no poster
+            still standing in for the clip, which is the better placeholder. */}
+        {!ready && !poster && (
           <div className="absolute inset-0 grid place-items-center text-white/70">
             <p className="animate-pulse text-sm">Loading…</p>
           </div>
@@ -510,12 +554,6 @@ export function ScrollVideo({
               {quoteLead.trim()},
             </span>
             <span className="mt-1 block">{quoteEmphasis}</span>
-          </Reveal>
-          <Reveal
-            className="mt-8 text-base font-bold uppercase tracking-[0.25em] text-brand-light sm:text-xl"
-            delay={0.2}
-          >
-            {home.quoteSub}
           </Reveal>
         </Beat>
 

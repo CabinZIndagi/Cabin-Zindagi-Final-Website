@@ -51,7 +51,7 @@ export default function OpengraphImage() {
         <div style={{ display: "flex", marginTop: 48, alignItems: "center" }}>
           <div style={{ width: 72, height: 6, background: "#2D8D46" }} />
           <div style={{ display: "flex", fontSize: 26, marginLeft: 20, color: "#c9d2d8" }}>
-            {"Agar Chakkaa nahi Ghumega, Toh Jahaj nahi Udega."}
+            {"If The Wheels Don't Move, The Freight Won't Sail."}
           </div>
         </div>
       </div>

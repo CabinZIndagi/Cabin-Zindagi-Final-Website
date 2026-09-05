@@ -17,15 +17,16 @@ export const STRINGS_FILE = resolve(ROOT, "scripts/.cache/strings.json");
 // ── Strings that must survive untranslated ──────────────────────────────────
 //
 // Machine translation will happily destroy all of these. The brand name becomes
-// a literal "cabin life"; the Hinglish quote gets flattened into plain Hindi and
-// loses the entire joke; YouTube titles stop matching the videos they label; and
-// driver names get transliterated into something the driver would not recognise.
+// a literal "cabin life"; the hero slogan comes back as a flat paraphrase that
+// loses its rhythm, so each language's version is hand-written in
+// lib/i18n/overrides/ instead; YouTube titles stop matching the videos they
+// label; and driver names get transliterated into something the driver would
+// not recognise.
 
 /** Dot-paths (supporting [] for "every element") that are copied verbatim. */
 export const DO_NOT_TRANSLATE = [
   "brand",
   "home.quote",
-  "home.quoteSub",
   "stories.featuredVideos[].id",
   "stories.featuredVideos[].title",
   "stories.latestVideos[].id",
