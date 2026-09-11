@@ -15,5 +15,11 @@
     "outcome": {
       "beforeLabel": "আগে"
     }
+  },
+  "music": {
+    "play": "বাজান",
+    "nowPlaying": "এখন বাজছে",
+    "upNext": "বাজানোর জন্য প্রস্তুত",
+    "safetyTitle": "গাড়ি ছাড়ার আগে বেছে নিন"
   }
 }

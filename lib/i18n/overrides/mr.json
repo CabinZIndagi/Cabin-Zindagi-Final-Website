@@ -15,5 +15,11 @@
     "outcome": {
       "afterLabel": "नंतर"
     }
+  },
+  "music": {
+    "play": "वाजवा",
+    "nowPlaying": "आता वाजत आहे",
+    "upNext": "वाजवण्यासाठी तयार",
+    "safetyTitle": "गाडी सुरू करण्यापूर्वी निवडा"
   }
 }
