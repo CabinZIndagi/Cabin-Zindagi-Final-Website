@@ -36,6 +36,7 @@ Built with care (and a fair amount of caffeine ☕) using **Next.js 15 · React 
 - 🪄 **Interactive effects** — `SplashCursor` (desktop + non-reduced-motion only), Aceternity boxes & timeline, spotlight cards.
 - 🎞️ **Scroll-scrubbed hero** — a pinned video whose playback is driven by your scroll while the story reveals beat-by-beat (brand → pillars → quote).
 - 📺 **Live subscriber count** — the Stories page pulls the YouTube channel's subscriber count via the YouTube Data API (server-side, hourly cached).
+- 🎵 **Music for drivers** — `/music` embeds curated YouTube playlists, with a tap-to-play song list when a `YOUTUBE_API_KEY` is set.
 
 ---
 
@@ -90,8 +91,28 @@ The form works out of the box in dev (it just logs to the browser console 🪵).
    ```
 3. Restart `npm run dev`. 🔄
 
-> 📺 **Optional:** add a server-side `YOUTUBE_API_KEY` to `.env.local` to show the
-> live subscriber count on the Stories page. Without it, the page just skips the count.
+---
+
+## 📺 Turning On the YouTube Features
+
+**Optional.** One server-side key powers two things:
+
+- the **live subscriber count** on the Stories page (cached hourly), and
+- the **song list** under the player on the Music page — the track listing that lets a driver tap a specific song instead of skipping through the playlist (cached daily).
+
+Without the key both pages work exactly as they do now: Stories hides the count, and Music falls back to YouTube's own next/prev buttons. Nothing errors. 👍
+
+1. Create a project at **[console.cloud.google.com](https://console.cloud.google.com)**.
+2. **APIs & Services → Library** → enable **YouTube Data API v3**.
+3. **APIs & Services → Credentials → Create credentials → API key**.
+4. Restrict it to the YouTube Data API v3. ⚠️ Do **not** add an HTTP-referrer restriction — this key is used server-side and a referrer rule would block it.
+5. Add it to `.env.local` and restart `npm run dev`:
+   ```bash
+   YOUTUBE_API_KEY=...
+   ```
+
+> 🔒 No `NEXT_PUBLIC_` prefix, so the key never reaches the browser.
+> 📊 Quota is a non-issue: 1 unit per request against 10,000/day free, and everything is cached.
 
 ---
 
@@ -103,6 +124,7 @@ Lost? Here's your map. 🗺️
 |-------------------------|------------------|
 | 📝 All site text (EN + HI) | `lib/dictionaries.ts` |
 | 🏷️ Products & prices | `data/products.ts` |
+| 🎵 Driver music playlists | `data/music.ts` |
 | 🖼️ Dormitory / product images | `public/products/`, `public/` |
 | 🎨 Brand colors (orange / green) | `tailwind.config.ts` (`colors.brand`, `accent`) |
 | 🔤 Display font | `lib/fonts.ts` |
@@ -116,6 +138,8 @@ Lost? Here's your map. 🗺️
 ## 🌐 Deploy
 
 Push to GitHub, import the repo at **[vercel.com](https://vercel.com)**, and add the three `NEXT_PUBLIC_EMAILJS_*` variables in your Vercel project settings. Ship it. 🚀
+
+> 🔑 `.env.local` is gitignored, so it does **not** travel with the push. Any server-side key you rely on in production — `SUPABASE_*`, and `YOUTUBE_API_KEY` if you want the subscriber count and the song list — has to be added in the host's environment variables too, then redeployed.
 
 ---
 

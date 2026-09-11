@@ -105,6 +105,14 @@ export const pages: PageEntry[] = [
     changeFrequency: "weekly",
   },
   {
+    path: "/music",
+    title: "Music for Drivers",
+    description:
+      "Free music for the long haul — 90s truck classics, Punjabi and Bhojpuri hits, morning bhajans and calm night-drive playlists, streamed from YouTube.",
+    priority: 0.7,
+    changeFrequency: "monthly",
+  },
+  {
     path: "/contact",
     title: "Contact Us",
     description:

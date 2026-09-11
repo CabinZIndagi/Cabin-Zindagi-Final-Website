@@ -92,9 +92,14 @@ export const driverServices: DriverService[] = [
   },
   {
     id: "music",
+    tint: {
+      wash: "from-brand-dark/35 dark:from-brand-dark/25",
+      border: "border-brand-dark/45 dark:border-brand-dark/30",
+      icon: "text-brand-dark/55 dark:text-brand/45",
+    },
     icon: "music_note",
     label: { en: "Music", hi: "संगीत" },
-    comingSoon: true,
+    href: "/music",
   },
   {
     id: "fuel",
