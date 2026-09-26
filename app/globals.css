@@ -55,3 +55,14 @@ section {
   font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
 }
+
+/* /sda-registration is a replica of the Google Form it replaces, and stays
+   light whatever theme the rest of the site is in — an entrant should see the
+   same document the person who sent them the link saw.
+
+   color-scheme matters as much as the colours: without it the browser paints
+   native <select> menus and checkboxes in its dark palette, which lands dark
+   grey-on-white controls in the middle of an otherwise white card. */
+.cz-form {
+  color-scheme: light;
+}

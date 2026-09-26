@@ -113,6 +113,16 @@ export const pages: PageEntry[] = [
     changeFrequency: "monthly",
   },
   {
+    // A limited-run event: the window lives in lib/smart-driver-awards.ts.
+    // Left in the sitemap while it runs so drivers can find it from search.
+    path: "/sda-registration",
+    title: "Smart Driver Awards Season 5 — Registration",
+    description:
+      "Register for Smart Driver Awards Season 5, hosted by CDRM with Cabin Zindagi as Driver Welfare Partner. Enter your name, WhatsApp number, state and driving details.",
+    priority: 0.7,
+    changeFrequency: "daily",
+  },
+  {
     path: "/contact",
     title: "Contact Us",
     description:
