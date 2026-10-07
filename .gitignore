@@ -30,3 +30,6 @@ next-env.d.ts
 scripts/.cache/
 __pycache__/
 .venv/
+
+# vercel
+.vercel

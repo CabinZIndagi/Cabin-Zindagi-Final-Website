@@ -3,6 +3,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { SiteChrome } from "@/components/SiteChrome";
 import { SplashCursorGate } from "@/components/SplashCursorGate";
+import { Analytics } from "@vercel/analytics/next";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ogImage, siteDescription, siteName, siteTagline, siteUrl } from "@/lib/site";
@@ -66,6 +67,7 @@ export default function RootLayout({
           <SiteChrome>{children}</SiteChrome>
         </Providers>
         <SplashCursorGate />
+        <Analytics />
       </body>
     </html>
   );
