@@ -322,6 +322,10 @@ const base = {
       whatsappCta: "Join on WhatsApp",
       scanQr: "Scan the code to join on WhatsApp",
       dismiss: "Dismiss",
+      submittedTitle: "Registration received",
+      submittedBody:
+        "Your Smart Driver Awards entry has been recorded. We'll send updates to the WhatsApp number you gave.",
+      submittedCta: "Explore driver services",
       browseTitle: "Browse all",
       comingSoon: "Coming soon",
     },
@@ -707,6 +711,10 @@ const base = {
       whatsappCta: "व्हाट्सएप पर जुड़ें",
       scanQr: "व्हाट्सएप पर जुड़ने के लिए कोड स्कैन करें",
       dismiss: "बंद करें",
+      submittedTitle: "आपका नामांकन दर्ज हो गया",
+      submittedBody:
+        "Smart Driver Awards में आपका नामांकन मिल गया है। आपको इसी WhatsApp नंबर पर अपडेट मिलेगा।",
+      submittedCta: "ड्राइवर सेवाएँ देखें",
       browseTitle: "सभी सेवाएँ",
       comingSoon: "जल्द आ रहा है",
     },

@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { grantDriverAccess } from "@/lib/driver-access";
 import {
   EXPERIENCE_OPTIONS,
   STATES,
@@ -18,7 +20,7 @@ import {
  * globals.css keeps that true in dark mode.
  */
 
-type Status = "idle" | "sending" | "success" | "error";
+type Status = "idle" | "sending" | "error";
 
 const CARD =
   "rounded-lg border border-[#dadce0] bg-white px-6 py-5 sm:px-8 sm:py-6";
@@ -190,6 +192,7 @@ function PartnerCard({ label }: { label: string }) {
 }
 
 export function SmartDriverAwardsForm() {
+  const router = useRouter();
   const [page, setPage] = useState<1 | 2>(1);
   const [stateName, setStateName] = useState("");
   const [experience, setExperience] = useState("");
@@ -197,6 +200,13 @@ export function SmartDriverAwardsForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [fieldError, setFieldError] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
+
+  // Each Form page starts at its title, as Google's does — otherwise page 2
+  // opens wherever page 1 was scrolled to.
+  const goToPage = (to: 1 | 2) => {
+    setPage(to);
+    window.scrollTo(0, 0);
+  };
 
   const toggleVehicle = (value: string) =>
     setVehicles((current) =>
@@ -257,7 +267,11 @@ export function SmartDriverAwardsForm() {
         }),
       });
       if (!res.ok) throw new Error(`Entry save failed: ${res.status}`);
-      setStatus("success");
+      // They've just given us their name and number, so the driver hub
+      // shouldn't ask again. Status stays "sending" so Submit stays disabled
+      // while the hub loads; it shows the confirmation popup.
+      grantDriverAccess(String(data.get("name") ?? "").trim());
+      router.push("/for-drivers?submitted=sda");
     } catch (err) {
       console.error(err);
       setStatus("error");
@@ -269,20 +283,6 @@ export function SmartDriverAwardsForm() {
   // Forms' text fields are a single baseline rule, not a box.
   const lineInput =
     "mt-4 block w-full max-w-md border-0 border-b border-[#dadce0] bg-transparent px-0 pb-1.5 text-[14px] text-[#202124] outline-none transition placeholder:text-[#9aa0a6] focus:border-b-2 focus:border-[#434343]";
-
-  if (status === "success") {
-    return (
-      <div className={CARD}>
-        <h2 className="text-[22px] font-normal text-[#202124]">
-          आपका नामांकन दर्ज हो गया
-        </h2>
-        <p className="mt-3 text-[14px] leading-6 text-[#202124]">
-          Your response has been recorded. आपको इसी WhatsApp नंबर पर अपडेट
-          मिलेगा।
-        </p>
-      </div>
-    );
-  }
 
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="space-y-3">
@@ -323,7 +323,7 @@ export function SmartDriverAwardsForm() {
           <ProgressFooter page={1} onClear={clearForm}>
             <button
               type="button"
-              onClick={() => setPage(2)}
+              onClick={() => goToPage(2)}
               className="rounded bg-[#434343] px-6 py-2 text-sm font-medium text-white transition hover:bg-[#2c2c2c]"
             >
               Next
@@ -487,7 +487,7 @@ export function SmartDriverAwardsForm() {
             </p>
           )}
 
-          <ProgressFooter page={2} onBack={() => setPage(1)} onClear={clearForm}>
+          <ProgressFooter page={2} onBack={() => goToPage(1)} onClear={clearForm}>
             <button
               type="submit"
               disabled={status === "sending"}
