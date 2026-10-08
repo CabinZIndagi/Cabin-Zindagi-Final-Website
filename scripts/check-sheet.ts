@@ -24,19 +24,12 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
-/** The columns /api/award-entries writes, in order. */
-const HEADERS = [
-  "Timestamp",
-  "Full Name",
-  "WhatsApp",
-  "State",
-  "District/City",
-  "Experience",
-  "Vehicle Type",
-  "Employer/Fleet",
-];
+import { SHEET_HEADERS, SHEET_TAB } from "../lib/smart-driver-awards";
 
-const TAB = "Entries";
+/** The columns /api/award-entries writes, in order. */
+const HEADERS: readonly string[] = SHEET_HEADERS;
+
+const TAB = SHEET_TAB;
 const TOKEN_URL = "https://oauth2.googleapis.com/token";
 
 const b64url = (input: string | Buffer) =>

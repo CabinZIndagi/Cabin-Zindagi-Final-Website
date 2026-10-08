@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import {
   EXPERIENCE_OPTIONS,
+  SHEET_HEADERS,
   SHEET_TAB,
   VEHICLE_TYPES,
   STATES,
@@ -105,7 +106,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    await appendSheetRow(SHEET_TAB, row);
+    await appendSheetRow(SHEET_TAB, row, SHEET_HEADERS);
   } catch (err) {
     console.error("Sheets append threw:", err);
     return NextResponse.json({ error: "storage_failed" }, { status: 502 });

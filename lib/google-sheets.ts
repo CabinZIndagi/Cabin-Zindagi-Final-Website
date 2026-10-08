@@ -82,16 +82,124 @@ async function accessToken(email: string, key: string) {
   return json.access_token;
 }
 
+/** Tabs whose header row has been confirmed on this warm instance. */
+const headedTabs = new Set<string>();
+
+// What the API writes in column A (en-IN, e.g. "8/10/2026, 11:02:47 am").
+// Used to tell a data row in row 1 from a header someone typed by hand.
+const LOOKS_LIKE_TIMESTAMP = /^\d{1,2}\/\d{1,2}\/\d{4}/;
+
+/** Sheets usually parses that timestamp into a date, which reads back
+ *  unformatted as a serial number; if not, it stays the string above. */
+const isTimestampCell = (cell: unknown) =>
+  typeof cell === "number" || LOOKS_LIKE_TIMESTAMP.test(String(cell ?? "").trim());
+
 /**
- * Appends one row to `tab`. Values are written as-is (USER_ENTERED), so a
+ * Makes sure row 1 of `tab` is `headers`, so the sheet reads as a table rather
+ * than bare data:
+ *   - row 1 empty         → headers written there
+ *   - row 1 is a data row → a row is inserted above it for the headers
+ *     (a sheet that took entries before this check existed)
+ *   - anything else       → left alone; someone labelled it by hand
+ * Checked once per warm instance, not on every entry.
+ */
+async function ensureHeaderRow(
+  sheetId: string,
+  token: string,
+  tab: string,
+  headers: readonly string[]
+) {
+  if (headedTabs.has(tab)) return;
+
+  const base = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}`;
+  const auth = { Authorization: `Bearer ${token}` };
+
+  const rowRes = await fetch(
+    `${base}/values/${encodeURIComponent(`${tab}!1:1`)}?valueRenderOption=UNFORMATTED_VALUE`,
+    { headers: auth }
+  );
+  if (!rowRes.ok) {
+    throw new Error(`Sheets header read failed: ${rowRes.status} ${await rowRes.text()}`);
+  }
+  const row = ((await rowRes.json()) as { values?: unknown[][] }).values?.[0] ?? [];
+  const empty = row.every((cell) => !String(cell).trim());
+
+  if (!empty && !isTimestampCell(row[0])) {
+    headedTabs.add(tab);
+    return;
+  }
+
+  if (!empty) {
+    // insertDimension wants the tab's numeric id, not its name.
+    const metaRes = await fetch(
+      `${base}?fields=sheets.properties(sheetId,title)`,
+      { headers: auth }
+    );
+    if (!metaRes.ok) {
+      throw new Error(`Sheets metadata read failed: ${metaRes.status} ${await metaRes.text()}`);
+    }
+    const meta = (await metaRes.json()) as {
+      sheets: { properties: { sheetId: number; title: string } }[];
+    };
+    const gid = meta.sheets.find((s) => s.properties.title === tab)?.properties.sheetId;
+    if (gid === undefined) throw new Error(`No tab named "${tab}" in the sheet.`);
+
+    const insertRes = await fetch(`${base}:batchUpdate`, {
+      method: "POST",
+      headers: { ...auth, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        requests: [
+          {
+            insertDimension: {
+              range: { sheetId: gid, dimension: "ROWS", startIndex: 0, endIndex: 1 },
+              inheritFromBefore: false,
+            },
+          },
+        ],
+      }),
+    });
+    if (!insertRes.ok) {
+      throw new Error(`Sheets row insert failed: ${insertRes.status} ${await insertRes.text()}`);
+    }
+  }
+
+  const putRes = await fetch(
+    `${base}/values/${encodeURIComponent(`${tab}!A1`)}?valueInputOption=RAW`,
+    {
+      method: "PUT",
+      headers: { ...auth, "Content-Type": "application/json" },
+      body: JSON.stringify({ values: [headers] }),
+    }
+  );
+  if (!putRes.ok) {
+    throw new Error(`Sheets header write failed: ${putRes.status} ${await putRes.text()}`);
+  }
+  headedTabs.add(tab);
+}
+
+/**
+ * Appends one row to `tab`, after putting `headers` in row 1 if they are
+ * missing (see ensureHeaderRow). Values are written as-is (USER_ENTERED), so a
  * leading apostrophe is the only thing keeping a long phone number from being
  * reformatted as a number by Sheets — see the caller.
  */
-export async function appendSheetRow(tab: string, row: (string | number)[]) {
+export async function appendSheetRow(
+  tab: string,
+  row: (string | number)[],
+  headers?: readonly string[]
+) {
   const account = serviceAccount();
   if (!account) throw new Error("Google Sheets is not configured.");
 
   const token = await accessToken(account.email, account.key);
+  if (headers) {
+    // A header problem shouldn't cost the entry itself; log it and append.
+    try {
+      await ensureHeaderRow(account.sheetId, token, tab, headers);
+    } catch (err) {
+      console.error("Sheets header check failed:", err);
+    }
+  }
   const range = encodeURIComponent(`${tab}!A:Z`);
   const url =
     `https://sheets.googleapis.com/v4/spreadsheets/${account.sheetId}` +

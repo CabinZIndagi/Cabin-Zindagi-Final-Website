@@ -20,6 +20,22 @@ export const ENTRIES_CLOSE_AT = new Date("2026-10-31T23:59:59+05:30");
 /** Tab (sheet) name inside the spreadsheet that rows are appended to. */
 export const SHEET_TAB = "Entries";
 
+/**
+ * Row 1 of SHEET_TAB, in the order /api/award-entries writes its columns.
+ * The API puts this in place itself before the first entry lands, so a fresh
+ * production sheet never ends up as unlabelled data.
+ */
+export const SHEET_HEADERS = [
+  "Timestamp",
+  "Full Name",
+  "WhatsApp",
+  "State",
+  "District/City",
+  "Experience",
+  "Vehicle Type",
+  "Employer/Fleet",
+] as const;
+
 export type WindowState = "before" | "open" | "closed";
 
 export function windowState(now: Date = new Date()): WindowState {
