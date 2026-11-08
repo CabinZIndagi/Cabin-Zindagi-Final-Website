@@ -15,7 +15,7 @@
  * date still counts, and the first second of the next day does not.
  */
 export const ENTRIES_OPEN_AT = new Date("2026-09-26T00:00:00+05:30");
-export const ENTRIES_CLOSE_AT = new Date("2026-10-31T23:59:59+05:30");
+export const ENTRIES_CLOSE_AT = new Date("2026-12-30T23:59:59+05:30");
 
 /** Tab (sheet) name inside the spreadsheet that rows are appended to. */
 export const SHEET_TAB = "Entries";

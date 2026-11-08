@@ -33,3 +33,8 @@ __pycache__/
 
 # vercel
 .vercel
+
+# Claude Code files, never committed
+.claude/
+CLAUDE.md
+CLAUDE.local.md
